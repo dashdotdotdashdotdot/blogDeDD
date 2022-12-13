@@ -1,8 +1,86 @@
 ---
-title: Morphing between Negative and Positive
-author: R package build
-date: '2022-12-13'
+title: "Morphing between Negative and Positive"
+author: "R package build"
+date: "2022-12-13"
 slug: positiveNegative
 categories: []
 tags: []
 ---
+
+This notebook shows how to use some of the tools in the package *aPhotoDeDD*.[^1] As this is an R Notebook, you can read the .html version on a browser or you can bring up the .Rmd version in Rstudio and run it line by line and make changes as desired. The animation that this program produces is posted on the instagram site of @dashdotdotdashdot: [instagram](https://www.instagram.com/p/CmCN8AhuJXl/). The idea is to run it once at a low resolution first with a small number of frames to see that it works before committing to creating a relatively large .gif file (over 300 megabytes). To load to instagram, I convert to an .mp4 file.
+
+[^1]: current location is (<https://github.com/dashdotdotdashdotdot/aPhotoDeDD>)
+
+The first step is to load the photo, which is a negative that is in the public domain ([Wikimedia](https://commons.wikimedia.org/wiki/File:Portrait_of_a_bride_and_groom_(AM_75371-2).jpg)). I include it as part of the package. I used my shiny App, picAdjApp to fine tune the photo a bit: I increased it brightness, and I took a negative of it to make it a positive. I do this with my adjustPicture() function. I do a "horizontal append" to look at the resulting pair of images.
+
+
+```r
+library(aPhotoDeDD)
+library(magick)
+```
+
+```
+## Linking to ImageMagick 6.9.12.3
+## Enabled features: cairo, fontconfig, freetype, heic, lcms, pango, raw, rsvg, webp
+## Disabled features: fftw, ghostscript, x11
+```
+
+```r
+photo <- demo_dd("NegWedding.jpg")
+# adjPicApp(photo)
+pixels0 <- 800
+
+photo1 <- adjustPicture(photo, pixels = pixels0, bsh = c(117, 100, 100), return = 0, imageNegate = FALSE)
+photo2 <- adjustPicture(photo, pixels = pixels0, bsh = c(117, 100, 100), return = 0, imageNegate = TRUE)
+
+image_append(c(photo1, photo2))
+```
+
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-1-1.png" width="100%" />
+
+The next code block creates a stack of images that starts with the positive image and transforms into the negative image. It transforms first on the left-hand side of the image and then on the right-hand side of the image. This is accomplished with the blackNwhite matrix which is passed one row per frame to the transPic function.
+
+
+```r
+noFrames <- 10
+blackNwhite <- rbind(
+  cbind(rep(0, noFrames / 2), seq(0, 1, length = noFrames / 2)),
+  cbind(seq(0, 1, length = noFrames / 2), rep(1, noFrames / 2))
+)
+
+stack1 <- rep(photo1, noFrames)
+for (i in 1:noFrames) {
+  stack1[i] <- transPics(photo1, photo2, blackNwhite = blackNwhite[i, ])
+  # print(i)
+}
+
+image_append(stack1[round(seq(1, length(stack1), length = 5), 0)])
+```
+
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-1.png" width="100%" />
+
+The next step uses the makeTesslation function to make the image into a square by relecting it and squeezing it on both sides.
+
+
+```r
+stack2 = stack1
+for (i in 1:length(stack2) ){
+#tst = adjustPicture(stack1[i],pixels=600)
+tst =  stack1[i]
+stack2[i]=makeTessalation(tst,rows=1,columns=3,decay=-2.8,center=c(2,1),option=1)
+}
+stack1[5]
+```
+
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-3-1.png" width="100%" />
+
+The next code blooks inverts the order of stack2 and then adds stack2 in the original order at the end. This results in starting with the negative which becomes positive and then becomes negative again. The magick function image_morph is then used to blend between the frames to smooth out the animation and then finally I write the resulting stack to a gif function.
+
+
+```r
+write_gif = F
+if (write_gif == T) {
+stack3 = image_morph(c( stack2[length(stack2):1],stack1 ))
+image_write_gif(stack3,"posNegMarriage.gif")
+}
+```
