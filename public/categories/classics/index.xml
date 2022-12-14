@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Classics on Blog de DD</title>
+    <link>/categories/classics/</link>
+    <description>Recent content in Classics on Blog de DD</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 14 Dec 2022 00:00:00 +0000</lastBuildDate><atom:link href="/categories/classics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Escher&#39;s Sphere</title>
+      <link>/post/2022/12/14/escherssphere/</link>
+      <pubDate>Wed, 14 Dec 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2022/12/14/escherssphere/</guid>
+      <description>Introduction Figure 1: Escher’s Sphere Escher created three dimensional spaces that never existed with mathematical precision. He also was very good at conveying a sense of depth on a flat surface. All without the aid of a computer.
+About this sphere (made in 1958) he wrote: “Curved ribbons or strips are suited to suggest a three dimensionality… A system of four theoretically never ending ribbons running over the surface of the sphere linking at the poles.</description>
+    </item>
+    
+  </channel>
+</rss>

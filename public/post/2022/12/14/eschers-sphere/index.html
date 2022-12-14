@@ -42,22 +42,17 @@ Figure 1: Escher’s Sphere
 <p>Escher created three dimensional spaces that never existed with mathematical precision. He also was very good at conveying a sense of depth on a flat surface. All without the aid of a computer.</p>
 <p>About this sphere (made in 1958) he wrote: “Curved ribbons or strips are suited to suggest a three dimensionality… A system of four theoretically never ending ribbons running over the surface of the sphere linking at the poles. Both poles are visible, one externally and one internally through the interspace between the two ribbons.”<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></p>
 <p>In this note, we reverse his math to determine what he actually did, but we will use a computer.</p>
-<pre><code class="language-marginfigure">We are using _latitude_ (lat) and _longitude_ (long) in more or less the same way they are used in geography.  A negative _longitude_ goes to the west, and a _longitude_ of $X + \lambda 360$ is the same as $X$ whenever $\lambda$ is an integer. The formula that we use to create the ribons is:
-
-$$long = \alpha + \beta \times log\bigg(\frac{1}{ (lat + 90)/180}-1 \bigg) $$
-which is an inverse logistic function.  Escher used something that was somewhat different as will be shown.
-</code></pre>
-<p>Escher rotated the sphere forward by 45 degrees, and he used orthographic projection. In order for the ribbons to be never ending one will need a function that maps “latitude” to “longitude” such that a latitude of +/- 90 degrees goes to a longitude of +/- infinity. See note on the side for how we are using these terms and the function that we use.</p>
-<p>The first step is to bring the image of Escher’s Sphere into the “plot device” and to “locate” a few key points using the locator function on the <em>XY plane</em> on which the image is drawn.<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup> Points 1 and 2 are the <em>North</em> and <em>South</em> pole respectively. The third point is a tangent point on the west of the sphere, and the fourth point is where one of the strips intersects with the center of the globe. These points are labeled in the figure to the right. We now know these points in the <em>XY plane</em> after the sphere has been rotated. We can use this information to determine how the sphere has been rotated and recover the latitude and longitude of points three and four as well as the radius of the sphere (We already know the latitude and longitude of points 1 and 2 as they are the north and south poles.).</p>
+<p>Escher rotated the sphere forward by 45 degrees, and he used orthographic projection. In order for the ribbons to be never ending one will need a function that maps “latitude” to “longitude” such that a latitude of +/- 90 degrees goes to a longitude of +/- infinity. See note on the side for how we are using these terms and the function that we use.<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup></p>
+<p>The first step is to bring the image of Escher’s Sphere into the “plot device” and to “locate” a few key points using the locator function on the <em>XY plane</em> on which the image is drawn.<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup> Points 1 and 2 are the <em>North</em> and <em>South</em> pole respectively. The third point is a tangent point on the west of the sphere, and the fourth point is where one of the strips intersects with the center of the globe. These points are labeled in the figure to the right. We now know these points in the <em>XY plane</em> after the sphere has been rotated. We can use this information to determine how the sphere has been rotated and recover the latitude and longitude of points three and four as well as the radius of the sphere (We already know the latitude and longitude of points 1 and 2 as they are the north and south poles.).</p>
 <div class="figure">
-<img src="/post/2022/12/14/eschers-sphere/index_files/figure-html/unnamed-chunk-2-1.png" alt="Locating four points on the sphere" width="336" />
+<img src="/post/2022/12/14/eschers-sphere/index_files/figure-html/unnamed-chunk-1-1.png" alt="Locating four points on the sphere" width="336" />
 <p class="caption">
 Figure 2: Locating four points on the sphere
 </p>
 </div>
-<p>We can guess that he rotated the sphere forward by 45 degrees and we will make the radius a bit less than 1 (0.96), which we will allow us to match the poles of the sphere.<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup> These two parameters serve as a reasonable initial guess. The poles of the sphere (the green triangle and blue circle) line up well with the figure.</p>
+<p>We can guess that he rotated the sphere forward by 45 degrees and we will make the radius a bit less than 1 (0.96), which we will allow us to match the poles of the sphere.<sup id="fnref:4"><a href="#fn:4" class="footnote-ref" role="doc-noteref">4</a></sup> These two parameters serve as a reasonable initial guess. The poles of the sphere (the green triangle and blue circle) line up well with the figure.</p>
 <div class="figure">
-<img src="/post/2022/12/14/eschers-sphere/index_files/figure-html/unnamed-chunk-3-1.png" alt="Verrifying the sphere is pitched forward by 45 degrees" width="336" />
+<img src="/post/2022/12/14/eschers-sphere/index_files/figure-html/unnamed-chunk-2-1.png" alt="Verrifying the sphere is pitched forward by 45 degrees" width="336" />
 <p class="caption">
 Figure 3: Verrifying the sphere is pitched forward by 45 degrees
 </p>
@@ -98,9 +93,9 @@ t(sol3$par)
 <pre><code>##           [,1]        [,2]     [,3]      [,4]     [,5]
 ## [1,] 0.9610612 -0.01167783 5.261112 -95.05542 49.23198
 </code></pre>
-<p>So we solved for the five parameters that minimized the loss function. We can then plot the figure to determine if it worked. It seems to have worked well. We plot the four points as well as the lines of latitude that correspond with points 3 and points 4. Finally, we plot <em>Null Island</em> and the equator (See Figure “Finding the Sphere”). One thing that is revealed is that the 45 degree forward rotation of the sphere yields that the south pole and <em>Null Island</em> coincide in the <em>projective plane</em>. <sup id="fnref:4"><a href="#fn:4" class="footnote-ref" role="doc-noteref">4</a></sup> The third point is at 5 degrees of latitude and -95 degrees of longitude, which is about where the Galapagos Islands are. The fourth point is at 49 degrees of latitude and 0 degrees of longitude which is about where Southampton in the UK is located.</p>
+<p>So we solved for the five parameters that minimized the loss function. We can then plot the figure to determine if it worked. It seems to have worked well. We plot the four points as well as the lines of latitude that correspond with points 3 and points 4. Finally, we plot <em>Null Island</em> and the equator (See Figure “Finding the Sphere”). One thing that is revealed is that the 45 degree forward rotation of the sphere yields that the south pole and <em>Null Island</em> coincide in the <em>projective plane</em>. <sup id="fnref:5"><a href="#fn:5" class="footnote-ref" role="doc-noteref">5</a></sup> The third point is at 5 degrees of latitude and -95 degrees of longitude, which is about where the Galapagos Islands are. The fourth point is at 49 degrees of latitude and 0 degrees of longitude which is about where Southampton in the UK is located.</p>
 <div class="figure">
-<img src="/post/2022/12/14/eschers-sphere/index_files/figure-html/unnamed-chunk-5-1.png" alt="Verrifying the solution" width="336" />
+<img src="/post/2022/12/14/eschers-sphere/index_files/figure-html/unnamed-chunk-4-1.png" alt="Verrifying the solution" width="336" />
 <p class="caption">
 Figure 4: Verrifying the solution
 </p>
@@ -111,7 +106,7 @@ Treating <code>\(\beta\)</code> as given, the value of <code>\(\alpha\)</code> t
 <p><code>$$\alpha = \beta \times log\bigg(\frac{1}{ (49+90)/180}-1 \bigg)$$</code>
 , where 49 degrees is the latitude of the fourth point.</p>
 <div class="figure">
-<img src="/post/2022/12/14/eschers-sphere/index_files/figure-html/unnamed-chunk-6-1.png" alt="Finding the spiral" width="432" />
+<img src="/post/2022/12/14/eschers-sphere/index_files/figure-html/unnamed-chunk-5-1.png" alt="Finding the spiral" width="432" />
 <p class="caption">
 Figure 5: Finding the spiral
 </p>
@@ -126,7 +121,7 @@ Below we present the side by side comparison of the two figures. Escher’s orig
 ## -89.0000 -44.5000   0.0000  -0.1716  44.5000  88.2320
 </code></pre>
 <div class="figure">
-<img src="/post/2022/12/14/eschers-sphere/index_files/figure-html/unnamed-chunk-7-1.png" alt="Original and the CGI version" width="816" />
+<img src="/post/2022/12/14/eschers-sphere/index_files/figure-html/unnamed-chunk-6-1.png" alt="Original and the CGI version" width="816" />
 <p class="caption">
 Figure 6: Original and the CGI version
 </p>
@@ -139,13 +134,16 @@ Figure 6: Original and the CGI version
 <p><em>Escher on Escher: Exploring the Infinite</em>, 1989, Abrams&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 <li id="fn:2">
-<p>locator is a function in the jpeg R package that enables you to click on a point in a figure and recover the XY coordinates of that point.&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<p>We are using <em>latitude</em> (lat) and <em>longitude</em> (long) in more or less the same way they are used in geography. A negative <em>longitude</em> goes to the west, and a <em>longitude</em> of <code>\(X + \lambda 360\)</code> is the same as <code>\(X\)</code> whenever <code>\(\lambda\)</code> is an integer. The formula that we use to create the ribons is:&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 <li id="fn:3">
-<p>We use a function that rotates points in <em>XYZ space</em>, where <em>XY</em> is the <em>projective plane</em> and <em>Z</em> is <em>depth</em>. We will use the term <em>pitch</em> to refer to rotating the Z axis towards the X axis, <em>roll</em> for rotating the X axis towards the Y axis and <em>yaw</em> for rotating the Y axis towards the Z axis.&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<p>locator is a function in the jpeg R package that enables you to click on a point in a figure and recover the XY coordinates of that point.&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 <li id="fn:4">
-<p>Off the coast of Africa, the location where the degrees of latitude and the degrees of longitude are both 0 is referred to as <em>Null Island</em>.&#160;<a href="#fnref:4" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<p>We use a function that rotates points in <em>XYZ space</em>, where <em>XY</em> is the <em>projective plane</em> and <em>Z</em> is <em>depth</em>. We will use the term <em>pitch</em> to refer to rotating the Z axis towards the X axis, <em>roll</em> for rotating the X axis towards the Y axis and <em>yaw</em> for rotating the Y axis towards the Z axis.&#160;<a href="#fnref:4" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:5">
+<p>Off the coast of Africa, the location where the degrees of latitude and the degrees of longitude are both 0 is referred to as <em>Null Island</em>.&#160;<a href="#fnref:5" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 </ol>
 </div>

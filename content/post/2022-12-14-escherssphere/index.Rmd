@@ -46,14 +46,11 @@ About this sphere (made in 1958) he wrote: "Curved ribbons or strips are suited 
 
 In this note, we reverse his math to determine what he actually did, but we will use a computer.
 
-```{marginfigure, echo = TRUE}
-We are using _latitude_ (lat) and _longitude_ (long) in more or less the same way they are used in geography.  A negative _longitude_ goes to the west, and a _longitude_ of $X + \lambda 360$ is the same as $X$ whenever $\lambda$ is an integer. The formula that we use to create the ribons is:
+Escher rotated the sphere forward by 45 degrees, and he used orthographic projection. In order for the ribbons to be never ending one will need a function that maps "latitude" to "longitude" such that a latitude of +/- 90 degrees goes to a longitude of +/- infinity.  See note on the side for how we are using these terms and the function that we use.^[We are using _latitude_ (lat) and _longitude_ (long) in more or less the same way they are used in geography.  A negative _longitude_ goes to the west, and a _longitude_ of $X + \lambda 360$ is the same as $X$ whenever $\lambda$ is an integer. The formula that we use to create the ribons is:
 
 $$long = \alpha + \beta \times log\bigg(\frac{1}{ (lat + 90)/180}-1 \bigg) $$
 which is an inverse logistic function.  Escher used something that was somewhat different as will be shown.
-```
-
-Escher rotated the sphere forward by 45 degrees, and he used orthographic projection. In order for the ribbons to be never ending one will need a function that maps "latitude" to "longitude" such that a latitude of +/- 90 degrees goes to a longitude of +/- infinity.  See note on the side for how we are using these terms and the function that we use.
+]
 
 The first step is to bring the image of Escher's Sphere into the "plot device" and to "locate" a few key points using the locator function on the _XY plane_ on which the image is drawn.^[locator is a function in the jpeg R package that enables you to click on a point in a figure and recover the XY coordinates of that point.]  Points 1 and 2 are the _North_ and _South_ pole respectively.  The third point is a tangent point on the west of the sphere, and the fourth point is where one of the strips intersects with the center of the globe.  These points are labeled in the figure to the right. We now know these points in the _XY plane_ after the sphere has been rotated.  We can use this information to determine how the sphere has been rotated and recover the latitude and longitude of points three and four as well as the radius of the sphere (We already know the latitude and longitude of points 1 and 2 as they are the north and south poles.).
 
