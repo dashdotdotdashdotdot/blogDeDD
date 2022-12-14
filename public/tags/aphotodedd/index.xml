@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>aPhotoDeDD on Blog de DD</title>
+    <link>/tags/aphotodedd/</link>
+    <description>Recent content in aPhotoDeDD on Blog de DD</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 14 Dec 2022 00:00:00 +0000</lastBuildDate><atom:link href="/tags/aphotodedd/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Morphing between posiitive and Negative</title>
+      <link>/post/2022/12/14/morphplusneg/</link>
+      <pubDate>Wed, 14 Dec 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2022/12/14/morphplusneg/</guid>
+      <description>This notebook shows how to use some of the tools in the package aPhotoDeDD.^[current location is (https://github.com/dashdotdotdashdotdot/aPhotoDeDD)] As this is an R Notebook, you can read the .html version on a browser or you can bring up the .Rmd version in Rstudio and run it line by line and make changes as desired. The animation that this program produces is posted on the instagram site of @dashdotdotdashdot: instagram. The idea is to run it once at a low resolution first with a small number of frames to see that it works before committing to creating a relatively large .</description>
+    </item>
+    
+  </channel>
+</rss>
