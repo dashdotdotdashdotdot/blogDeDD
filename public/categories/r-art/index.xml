@@ -8,6 +8,15 @@
     <language>en-us</language>
     <lastBuildDate>Wed, 14 Dec 2022 00:00:00 +0000</lastBuildDate><atom:link href="/categories/r-art/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Algorithimic Figure Ground Reversal</title>
+      <link>/post/2022/12/14/algogroundreversal/</link>
+      <pubDate>Wed, 14 Dec 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2022/12/14/algogroundreversal/</guid>
+      <description>Artists have long been fascinated with the concepts of figure and ground reversals. In this note, we show how to execute such techniques with mathematical operations on photographs. We will start with two images. The image on the left is one of a chess board. It is a photograph that I have taken. The image on the right is &amp;ldquo;Silhouet van Madame Eugène de Block-Looz,&amp;rdquo; which is a &amp;ldquo;snipping&amp;rdquo; done by Charles Auguste Fraikin in 1852 and is available on website of the Rijks Museum.</description>
+    </item>
+    
+    <item>
       <title>Morphing between posiitive and Negative</title>
       <link>/post/2022/12/14/morphplusneg/</link>
       <pubDate>Wed, 14 Dec 2022 00:00:00 +0000</pubDate>
