@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Wrapping Ribbons Around Donuts | Blog de DD</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Wrapping Ribbons Around Donuts</span></h1>
+<h2 class="author">DD</h2>
+<h2 class="date">2022/12/14</h2>
+</div>
+
+<main>
+<h1 id="introduction">Introduction</h1>
+<p><code>$${\sqrt {n}}\left(\left({\frac {1}{n}}\sum _{i=1}^{n}X_{i}\right)-\mu \right)\ {\xrightarrow {d}}\ N\left(0,\sigma ^{2}\right)$$</code></p>
+<p>Beautiful imagery can be created by &ldquo;wrapping&rdquo; curves around a &ldquo;donut&rdquo; or a &ldquo;torus&rdquo;. In this note, we describe how the formulas that accomplish this work.  It is useful to imagine a clock with one hand fixed to the edge of a turntable.  The clock is positioned such that the line between the center of the turntable and the center of the clock contains &ldquo;9 o&rsquo;clock&rdquo; and the &ldquo;plane containing the clock face&rdquo; is perpendicular to the plane of the turntable.  The hand of a clock has a light on at the end of it.  As the turntable spins and the clock hand spins the light traces out a &ldquo;curve&rdquo; going around the donut. At least in principle, one could create the imaginary described here using long exposure photography with such a mechanism.  To determine where the light is at any point in time, one needs to know the position of the hand on the clock as well as the position of the clock on the turntable.  The radius of the clock, <code>\(r_1\)</code>, and the radius of the turntable, <code>\(r_2\)</code>, matter as well but this we will view as fixed over time.</p>
+<p>Let <code>\(\theta_1(t) = t2\pi\)</code> be the angle of the clock hand on the clock over time. Let <code>\(\theta_2(t) = \frac{tp2\pi}{q}\)</code> be the angle of the turntable over time.  Angles are measured in radians.  When <code>\(t = 1\)</code> the clock hand has returned to where it started. Therefore, <code>\(1\)</code> is the amount of time it takes for the clock hand to do one full revolution.  Also, when <code>\(t = q/p\)</code> the turntable has returned to where it started. Therefore <code>\(q/p\)</code> is the amount of time it takes for the turntable to do one full revolution. We seek to express how the light moves through three dimensional space using an <code>\(xyz\)</code> coordinate system that places the center of the turntable at the origin. We will treat <code>\(X\)</code> as &ldquo;left to right,&rdquo;  <code>\(Y\)</code> as &ldquo;up and down&rdquo;&quot;, and <code>\(Z\)</code> as  &ldquo;back and front&rdquo;.  Therefore, we can think of the <code>\(XY\)</code> orthographic projection of the donut as an &ldquo;elevation&rdquo; and the <code>\(XZ\)</code> orthographic projection of the donut as the &ldquo;floor plan.&rdquo;</p>
+<p>It is intuitive to create the function as a compound function of three functions.  The first positions the hand of the clock on the face of the clock.  The second rotates the face of the clock with the rotation of the turntable. The third positions the center of the clock on the turntable.  The first function, <code>\(f_1\)</code> maps <code>\(\theta_1\)</code> to <code>\(XYZ\)</code>. The second function <code>\(f_2\)</code> maps <code>\(XYZ\)</code> and <code>\(\theta_2\)</code> to <code>\(XYZ\)</code>. The third maps XYZ and <code>\(\theta_2\)</code> to <code>\(XYZ\)</code>.</p>
+<p>The <code>\(f_1\)</code>:  <code>\(R \rightarrow R^3\)</code> is defined as
+$$ f_1( \theta_1) = [r_1sin(\theta_1), r_1cos(\theta_1), 0] $$</p>
+<p>The <code>\(f_2\)</code>:  <code>\(R + R^3 \rightarrow R^3\)</code> is defined as</p>
+<p>![matrixMultiplication](images/Screenshot 2022-12-14 at 4.30.28 PM.png){width=20% height=20%}</p>
+<p>This function is using matrix multiplication to rotate the X axis towards the Z axis while keeping the Y axis fixed.</p>
+<p>The <code>\(f_3\)</code>:  <code>\(R + R^3 \rightarrow R^3\)</code> is defined as</p>
+<p>$$ [X Y Z] + [r_2cos(\theta_2),0,r_2sin(\theta_2)] $$</p>
+<p>With these three functions, the donut wrapping function can be defined as:</p>
+<p>The <code>\(f_4\)</code>:  <code>\(R + R \rightarrow R^3\)</code> is defined as</p>
+<p>$$  f_3(f_2(f_1(\theta_1),\theta_2),\theta_2) $$</p>
+<p>or</p>
+<p>$$  f_3\bigg(f_2 \bigg(f_1 \bigg( \frac{t2\pi}{q} \bigg), \frac{t2\pi}{q} \bigg), \frac {t2\pi}{p} \bigg) $$</p>
+<h1 id="proposition">Proposition</h1>
+<p>If <code>\(p\)</code> and <code>\(q\)</code> are integers, when <code>\(t = pq\)</code>, the curve coincides with the curve when <code>\(t  = 0\)</code>.</p>
+<p>Further whenever <code>\(t = pq + x\)</code>, it coincides with the curve when <code>\(t\)</code>= <code>\(x\)</code> for any <code>\(x\)</code>.</p>
+<p>#Proof</p>
+<p>When <code>\(t = pq\)</code>, <code>\(\theta_1  = pq2\pi\)</code> and <code>\(\theta_2 = p^2\pi\)</code></p>
+<p>as <code>\(p\)</code> and <code>\(q\)</code> are integers it is the case that</p>
+<p>$$cos(pq2\pi + x) = cos(p^22\pi + x) =cos(0 + x) $$
+and
+$$sin(p2\pi) = sin(q2\pi) = sin(0) $$
+and the since The function <code>\(f_4\)</code> only depends on <code>\(\theta_1\)</code> and <code>\(\theta_2\)</code> as through the <code>\(cos\)</code> and <code>\(sin\)</code> functions the curve must coincide:</p>
+<p>$$  f_3(f_2(f_1(0),0),0) = f_3(f_2(f_1(p^22\pi),p^22\pi),pq2\pi)  $$</p>
+<p>As <code>\(f_1(p2\pi) = f_1(q2\pi)\)</code>, <code>\(f_2(XYZ,p2\pi) = f_2(XYZ,q2\pi)\)</code> ,
+<code>\(f_3(XYZ,p2\pi) = f_3(XYZ,q2\pi)\)</code> for any integers <code>\(p\)</code> and <code>\(q\)</code>.</p>
+<h1 id="remarks">Remarks</h1>
+<ol>
+<li>
+<p>This implies that if p/q is a rational number the curve will eventually come back to itself and forever repeat.</p>
+</li>
+<li>
+<p>Conversely, if p/q is not a rational number they will never coincide and the curve will go one forever. (If it did coinicide at some point in finite <code>\(t\)</code> it would a rational number as it could be represented as the ratio of two integers).</p>
+</li>
+<li>
+<p>If <code>\(p/q\)</code> is a big number the turntable moves faster than the clock and the lines around the donut will be relatively flat.  If <code>\(p/q\)</code> is a small number the clock moves fast relative to the turntable and the curves are the donut are relatively step.</p>
+</li>
+<li>
+<p>In <code>\(pq\)</code> revolutions of the clock revolves the light coincides with its starting point and <code>\(p^2\)</code> is the number of times that the turntable revolves.</p>
+</li>
+<li>
+<p>Suppose <code>\(p/q = 3/5\)</code>.  The when <code>\(pq\)</code> = 15 they coincide.  So that when clock goes around 15 times and the turntable goes around 9 times they will conincide.  They will also coincide when the clock goes around 5 times and the turn table goes are 3 times. Because the clock is going around 5 times, you get five inner curves that form a five point star in the center of the torus when viewed from a floor plan. See figure below.</p>
+</li>
+</ol>
+<img src="/post/2022/12/14/wrappingribons/index_files/figure-html/unnamed-chunk-1-1.png" width="672" />
+<p>This would correspond to the turn table going around 25 times and the clock going around 15 times.
+<img src="/post/2022/12/14/wrappingribons/index_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+
+</main>
+
+  <footer>
+  <script defer src="//yihui.org/js/math-code.js"></script>
+<script defer src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script defer src="//yihui.org/js/center-img.js"></script>
+
+  
+  <hr/>
+  © <a href="blog-de-dd.netlify.app">Douglas Dwyer</a> 2022 &ndash; 2022 | <a href="https://github.com/dashdotdotdashdotdot/">Github</a>
+  
+  </footer>
+  </body>
+</html>
+
