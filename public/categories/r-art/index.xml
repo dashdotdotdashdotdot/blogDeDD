@@ -31,8 +31,7 @@
       <pubDate>Wed, 14 Dec 2022 00:00:00 +0000</pubDate>
       
       <guid>/post/2022/12/14/wrappingribons/</guid>
-      <description>Introduction $${\sqrt {n}}\left(\left({\frac {1}{n}}\sum _{i=1}^{n}X_{i}\right)-\mu \right)\ {\xrightarrow {d}}\ N\left(0,\sigma ^{2}\right)$$
-Beautiful imagery can be created by &amp;ldquo;wrapping&amp;rdquo; curves around a &amp;ldquo;donut&amp;rdquo; or a &amp;ldquo;torus&amp;rdquo;. In this note, we describe how the formulas that accomplish this work. It is useful to imagine a clock with one hand fixed to the edge of a turntable. The clock is positioned such that the line between the center of the turntable and the center of the clock contains &amp;ldquo;9 o&amp;rsquo;clock&amp;rdquo; and the &amp;ldquo;plane containing the clock face&amp;rdquo; is perpendicular to the plane of the turntable.</description>
+      <description>Introduction Beautiful imagery can be created by &amp;ldquo;wrapping&amp;rdquo; curves around a &amp;ldquo;donut&amp;rdquo; or a &amp;ldquo;torus&amp;rdquo;. In this note, we describe how the formulas that accomplish this work. It is useful to imagine a clock with one hand fixed to the edge of a turntable. The clock is positioned such that the line between the center of the turntable and the center of the clock contains &amp;ldquo;9 o&amp;rsquo;clock&amp;rdquo; and the &amp;ldquo;plane containing the clock face&amp;rdquo; is perpendicular to the plane of the turntable.</description>
     </item>
     
   </channel>
