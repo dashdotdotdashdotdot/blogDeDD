@@ -56,7 +56,7 @@ for (i in 1:length(stack2) ){
 tst =  stack1[i]
 stack2[i]=makeTessalation(tst,rows=1,columns=3,decay=-2.8,center=c(2,1),option=1)
 }
-stack1[5]
+stack2[6]
 ```
 
 

@@ -2,7 +2,7 @@
 title: Home
 ---
 ## Blog de DD
-tst
+
 ```{r, echo=FALSE,  fig.height=4, fig.width=4, fig.align='center'}
 thetas=seq(0,1,length=20000)*32*10*pi
 par(ann=FALSE,pty='s', mfrow=c(1,1),bg="grey50",mai=0*c(1,1,1,1))
