@@ -6,16 +6,7 @@
     <description>Recent content in Posts on Blog de DD</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 13 Dec 2022 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Morphing between Negative and Positive</title>
-      <link>/post/2022/12/13/positivenegative/</link>
-      <pubDate>Tue, 13 Dec 2022 00:00:00 +0000</pubDate>
-      
-      <guid>/post/2022/12/13/positivenegative/</guid>
-      <description>This notebook shows how to use some of the tools in the package aPhotoDeDD.1 As this is an R Notebook, you can read the .html version on a browser or you can bring up the .Rmd version in Rstudio and run it line by line and make changes as desired. The animation that this program produces is posted on the instagram site of @dashdotdotdashdot: instagram. The idea is to run it once at a low resolution first with a small number of frames to see that it works before committing to creating a relatively large .</description>
-    </item>
-    
+    <lastBuildDate>Tue, 01 Dec 2020 21:13:14 -0500</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Hello R Markdown</title>
       <link>/post/2020/12/01/hello-r-markdown/</link>
