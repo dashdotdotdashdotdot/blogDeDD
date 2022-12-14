@@ -1,13 +1,8 @@
 ---
 title: Home
 ---
-
-# DD
-This is a blog to organize and keep track of my work in one place.  I started it on December 13, 2022.  
-
-## Blog of DD
-
-```{r, echo=FALSE}
+## Blog de DD
+```{r, echo=FALSE, fig.height=1, fig.width=1, fig.align='right'}
 thetas=seq(0,1,length=20000)*32*10*pi
 par(pty="s",ann=FALSE,mfrow=c(1,1),bg="grey50",mai=0*c(1,1,1,1))
 plot(cos(thetas),cos(thetas*16.0005/15),typ="l",col=rgb(0,0,0,.05),axes=F)
@@ -15,3 +10,4 @@ lines(sin(thetas),sin(thetas*16.0002/15),col=rgb(1,1,1,.2))
 
 ```
 
+This is a blog to organize and keep track of my work in one place.  I started it on December 13, 2022.  
