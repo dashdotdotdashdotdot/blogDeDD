@@ -1,0 +1,17 @@
+---
+title: Escher's Sphere v2 (in Tufte Style)
+author: DWD
+date: '2022-12-15'
+slug: escher-s-sphere-v2
+categories:
+  - R art
+tags:
+  - Tufte
+---
+
+````{=html}
+```{r, echo=FALSE, results='asis'}
+xfun::file_string('https://rart.shinyapps.io/dashDotDot/_w_a14f399f/Eschers_Sphere_25April2020.html')
+```
+````
+
