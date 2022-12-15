@@ -3,12 +3,18 @@ title: Home
 ---
 ## Blog de DD
 
+
+
 ```{r, echo=FALSE,  fig.height=4, fig.width=4, fig.align='center'}
-thetas=seq(0,1,length=20000)*32*10*pi
-par(ann=FALSE,pty='s', mfrow=c(1,1),bg="grey50",mai=0*c(1,1,1,1))
-plot(cos(thetas),cos(thetas*16.0005/15),typ="l",col=rgb(0,0,0,.05),axes=F)
-lines(sin(thetas),sin(thetas*16.0002/15),col=rgb(1,1,1,1))
+#thetas=seq(0,1,length=20000)*32*10*pi
+#par(ann=FALSE,pty='s', mfrow=c(1,1),bg="grey50",mai=0*c(1,1,1,1))
+#plot(cos(thetas),cos(thetas*16.0005/15),typ="l",col=rgb(0,0,0,.05),axes=F)
+#lines(sin(thetas),sin(thetas*16.0002/15),col=rgb(1,1,1,1))
 
 ```
 
-This is a blog to organize and keep track of my work in one place.  I started it on December 13, 2022.  
+[<img src="/./about_files/donut4.PNG" style="max-width:25%;min-width:40px;float:right;" alt="Github repo" />](https://github.com/yihui/hugo-xmin)
+
+
+This is a blog to organize and keep track of my work in one place.  
+I started it on December 13, 2022.  

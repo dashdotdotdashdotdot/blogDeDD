@@ -3,6 +3,12 @@ title: Home
 ---
 ## Blog de DD
 
-<img src="/_index_files/figure-html/unnamed-chunk-1-1.png" width="384" style="display: block; margin: auto;" />
 
-This is a blog to organize and keep track of my work in one place.  I started it on December 13, 2022.  
+
+
+
+[<img src="/./about_files/donut4.PNG" style="max-width:25%;min-width:40px;float:right;" alt="Github repo" />](https://github.com/yihui/hugo-xmin)
+
+
+This is a blog to organize and keep track of my work in one place.  
+I started it on December 13, 2022.  

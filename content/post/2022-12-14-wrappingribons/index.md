@@ -57,7 +57,9 @@ $$ f_1( \theta_1) = [r_1sin(\theta_1), r_1cos(\theta_1), 0] $$
 
 The `\(f_2\)`: `\(R + R^3 \rightarrow R^3\)` is defined as
 
-[matrixMultiplication](images/formula.png){width="20%" height="20%"}
+[<img src="images/formula.png" style="max-width:50%;min-width:50%;fixed:center;"/>]
+
+
 
 This function is using matrix multiplication to rotate the X axis
 towards the Z axis while keeping the Y axis fixed.
