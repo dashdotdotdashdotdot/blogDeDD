@@ -2,31 +2,37 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>/categories/</loc>
+    <lastmod>2022-12-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/post/2022/12/15/escher-s-sphere-v2/</loc>
+    <lastmod>2022-12-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/</loc>
+    <lastmod>2022-12-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/post/</loc>
+    <lastmod>2022-12-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/categories/r-art/</loc>
+    <lastmod>2022-12-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/tags/</loc>
+    <lastmod>2022-12-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/tags/tufte/</loc>
+    <lastmod>2022-12-15T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>/post/2022/12/14/algogroundreversal/</loc>
     <lastmod>2022-12-14T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/tags/aphotodedd/</loc>
     <lastmod>2022-12-14T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/categories/</loc>
-    <lastmod>2022-12-14T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>/post/2022/12/14/eschers-sphere/</loc>
     <lastmod>2022-12-14T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/</loc>
-    <lastmod>2022-12-14T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>/post/2022/12/14/morphplusneg/</loc>
-    <lastmod>2022-12-14T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/post/</loc>
-    <lastmod>2022-12-14T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/categories/r-art/</loc>
-    <lastmod>2022-12-14T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/tags/</loc>
     <lastmod>2022-12-14T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/post/2022/12/14/wrappingribons/</loc>
