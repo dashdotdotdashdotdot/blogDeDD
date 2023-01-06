@@ -1,0 +1,284 @@
+---
+title: How to Draw with Math
+author: DWD
+date: '2023-01-06'
+slug: how-to-draw-with-math
+categories:
+  - R art
+tags:
+  - ConnectTheDots
+---
+
+
+I have always been fascinated with line drawings and silhouettes. How could something two dimensional convey a sense of emotion and personality? Also, a line drawing can convey the illusion of depth. Further, a two dimensional drawing can be mapped to a 3D surface and when successful it can convey a sense of the shape of the surface -- the third dimension.
+
+In this note, I show an approach I developed to create a "connect the dots" representation of a simple line drawing or a simple silhouette. By connect the dots, I am thinking of an exercise one may find in a child's coloring book where a set of dots are numbered. When the child draws line segments connecting each consecutive point a recognizable drawing emerges. I will shows applications of such a representation.
+
+# Alternative Approaches
+
+There are many YouTube videos on how to create a silhouette with a pen tool in software such as Adobe Illustrator, Adobe Photoshop, Graphic Concepts.  There are illustrators that can obtain excellent results with a pen tool (cf. the work of Malika Favre). The illustrations can be saved as a .svg file, in which the silhouette that was created using the pen tool is represented as a set of Bezier curves.  One could presumably write a program to extract the parameters of each path from the .svg file and then transform these mathematically. I prefer my approach for two reasons. I did spend sometime making silhouettes using a pen tool in photoshop. While I could get satisfactory results with patience, I find it much more satisfying to drawing with an Apple Pencil, and the result has more of a _hand drawn_ feel that I like.  The second reason is that the resulting "connect the dots" representation is a much more intuitive representation that is easy to work with mathematically.
+
+# The Approach
+
+The first step is to start with an image that one could trace with either a graphite pencil using tracing paper or an apple pencil and ipad. I typically use the latter. I will start with a picture of a teapot that I took (below). The teapot is a non trivial example of the problem because it "has a hole" and the outer silhouette is not a "convex" set.
+
+```{r, echo = FALSE }
+rm(list=ls()) #remove all existing axes
+pixels <- 400
+noClusters = 300
+library(jpeg) #used to plot photo
+library(magick) #used for photo manipulation
+library(ArtMathdeDD) #a package of mine
+library(aPhotoDeDD) #a package of mine
+
+#rubiks=ddColors$Rubiks  #a pallette of six colors based on the Rubik's cube
+rubiks = c("#2F55CF", "#D92B2C", "#E6E621", "#26B143", "#FF5800", "#E6E6E6")
+colorVec = c("black",rep("white",20))
+colorVec2 = c("white",rep("black",20))
+
+source("~/dwdRstuff/utilities/distance.r")
+source("~/dwdRstuff/utilities/makeContour.r")
+source("~/dwdRstuff/utilities/shift.r")
+source("~/dwdRstuff/utilities/rotate.r")
+
+source("~/dwdRstuff/getDrawingObs.R")
+#source("~/dwdRstuff/utilities/scaleDrawing.r")
+
+par(pty="s",ann=T,mfrow=c(1,1),bg="white",mai=1*c(1,1,1,1))
+
+lim0  = c(-1,1)
+
+toDraw = image_read("~//dwdRstuff//imageFolders//TeaPot//teapotSquare.jpg")
+image_resize(toDraw,"400x")
+#define makePlot function
+makePlot = function(drawing_in,doLines=T,trans=1,axes0=T,polygon=F) {
+  lim0=c(-1,1)
+  if (doLines==T ) {
+    plot(NULL,xlim=lim0,ylim=lim0,axes=axes0)
+    if  (ncol(drawing_in)==2) {lines(drawing_in) } else{
+      for (i in unique(drawing_in[,3])) {
+        lines(drawing_in[drawing_in[,3]==i,1:2]) }
+    }} else {plot(drawing_in,xlim=lim0,ylim=lim0,pch=4,col=rgb(0,0,0,trans))}}
+
+#define a function to make a color pallette transparent
+makeTransparent = function(colorMatrix,alpha=.4) {
+  if ( is.null(nrow(c(1,1,1))) == TRUE)  {
+    colorVec = rep("",nrow(colorMatrix))
+      for (i in (1:nrow(colorMatrix))){
+        colorVec [i] = rgb(colorMatrix[i,1],colorMatrix[i,2],colorMatrix[i,3], alpha)
+  } } else {
+    colorVec  = rgb(colorMatrix[1],colorMatrix[2],colorMatrix[3], alpha)
+  }
+  return(colorVec)}
+
+tRubik = makeTransparent(t(col2rgb(rubiks))/255)
+
+
+```
+
+Below is the drawing that I created with an Apple pencil and an Ipad. I have experimented with a variety of approaches to automate the conversion of a silhouette using commercial software to varying levels of success. I prefer to trace by hand. Tracing takes a few minutes and allows for artistic control of the end result.
+
+```{r, echo=FALSE}
+
+filename = paste0("~//dwdRstuff//imageFolders//drawings//","la_tetera.JPG")
+drawing0 = image_read(filename)
+image_resize(drawing0,"400x")
+
+drawing1 <- adjustPicture(drawing0, pixels = pixels, bsh = c(100, 100, 100), return = 6, )
+
+obs007 = createObservations(drawing1)
+#summary(obs007)
+#nrow(obs007)
+
+```
+
+When we bring it in as an image, we have a pixel representation where some of the pixels are dark colors and some of the pixels are light colors (the colors are represented with an RGB color model). To use a statistical approach, we want to transform the pixels representations into "observations." One can think of an observations as a pixel in the image that was marked by the pencil. We seek a table of pixels with two columns -- the X and Y coordinates of the marked pixels. The function as.raster converts the image into an array of columns and rows where each cell is an RGB color. From this representation, we convert it into a data table (actually a data frame) in which one column is the row number of the pixel (i.e., the x coordinate) and another column is the column number of the pixel (i.e., the y coordinate) and the third column is the color of the pixel as represented using the RGB colorspace. From the RGB values, we select the pixels where the resulting average of each color is less than 100. These are the dark pixels as we are working with a high contrast image with little color. We now have a representation of the image as `r format(nrow(obs007),big.mark=",")` points in two dimensional space (left-hand panel in the figure below). As the zoom (center panel of figure below) reveals, this is not a mathematically convenient form to work with as there are many dots due to the thickness of the line (the thickness is typically about 2 points). At this stage, if one "connects the dots" one actually recovers something resembling the "convex hull" of the teapot (right-hand panel in figure below), which is not what we want.  This happens because when we converted the observations from an array to a table the observations became sorted by row of the pixel first and then the column of the pixel second. 
+
+```{r, echo=FALSE}
+par(pty="s",ann=F,mfrow=c(1,3),bg="white",mai=0*c(1,1,1,1))
+
+plot(obs007, xlim = lim0, ylim = lim0, col = rgb(0, 0, 0, 1),axes=F,pch=20)
+text(0,1,"Point Cloud Representation of Drawing")
+plot(obs007[obs007[,2]<.09,], xlim = .1 * lim0 + .55, ylim = .1 * lim0, col = rgb(0, 0, 0, 1),main="Zoom",axes=F,pch=20)
+text(0.55,.10,"Detail of Drawing")
+
+plot(obs007, xlim = lim0, ylim = lim0, col = rgb(0, 0, 0, 1), typ = "l",axes=F)
+text(0,1,"Connecting the Dots with Wrong Ordering")
+
+```
+
+One approach to reduce the number of points is to use a statistical learning technique called _K-Means Clustering_. What this approach does is find a specified number of clusters and assign each observation to a cluster and computes the distance of each observation from its cluster. It then chooses the clusters to minimize the sum of the distance of each observations from its cluster. We can extract the clusters from the procedure and reduce `r format(nrow(obs007),big.mark=",")` observations into `r format(noClusters,big.mark=",")` points (for example). The left-hand panel of the figure below shows the new set of dots. The rightpanel shows a "connect the dots" version of these points which results in a jarring configuration of jagged lines.  The clusters are not yet in the correct order for a connect the dots representation.
+
+```{r, echo=FALSE, warning=F, echo=FALSE}
+par(pty="s",ann=F,mfrow=c(1,2),bg="white",mai=0*c(1,1,1,1))
+ plot(obs007,xlim=lim0,ylim=lim0,col=rgb(0,0,0,0), axes=F)
+ text(0,1,"Representing Teapot Used Clusterings",cex=.8)
+ 
+ set.seed(1)
+  mod1 = kmeans(obs007,noClusters,iter.max=800,algorithm =c( "Hartigan-Wong"))
+  dsn=as.matrix(mod1$centers)
+  points(dsn,col=rgb(0,0,0,1),pch=19)
+  
+   plot(dsn,xlim=lim0,ylim=lim0,col=rgb(0,0,0,1),typ="l", axes=F)
+ text(0,1,"Connecting Clusterings with the Wrong Ordering",cex=.8)
+
+```
+
+There are many ways to order `r format(noClusters,big.mark=",")` dots. A mathematical description of what makes one the best is not readily obvious. Nevertheless, one can mathematically describe what is a bad ordering and what would be a better ordering. Also, for some drawings, one will want multiple lines -- the virtual equivalent to where the artist picked up the pencil to make a new line. My approach starts by choosing the "next point" such that it is closest to the previous point. I then choose the starting point such that of all the possible starting points (there are `r format(noClusters,big.mark=",")`) the resulting path is the shortest. Finally, I will choose the numbers of times that I break the line into multiple lines. I find that this approach is close to "what I drew" across a wide variety of drawings. The left-hand panel in the figure below shows the result of from choosing a poor starting point (the red dot). When the line returns to the red dot it makes a long jump to the next points which is the "hole" formed by the inside of the handle. 
+
+The right-hand image in the figure below is the result from choosing the starting point to minimize the resulting distance traveled given the constraint of always moving to the next closest point. This results in a small jump between the outer shape and the inner shape that is consistent with the size of the handle.
+
+
+```{r, echo=FALSE}
+par(pty="s",ann=F,mfrow=c(1,2),bg="white",mai=0*c(1,1,1,1))
+
+startPoint=100
+contour1 = makeContour2(dsn,start=startPoint)
+#length(contour1)
+makePlot(dsn[contour1,],doLines=T,axes0=F)
+points(dsn[startPoint,1],dsn[startPoint,2],col="red",pch=19)
+text(0,1,"Connecting Dots using Next Closest with Bad 1st Dot",cex=.8)
+
+bestLength=10^5
+  for (startTst in 1:nrow(dsn)) {
+    contour1 = makeContour2(dsn,start=startTst)
+    newLength= sum(findDistance(dsn[contour1,])^2)
+    if ( newLength < bestLength) 
+    {bestStart =startTst; bestLength= newLength}
+  #  print(startTst)
+  }
+  
+  contour2 = makeContour2(dsn,start=bestStart)
+makePlot(dsn[contour2,],doLines=T,axes0=FALSE)
+points(dsn[bestStart,1],dsn[bestStart,2],col="red",pch=19)
+text(0,1,"Connecting Dots using Next Closest with a Best 1st Dot",cex=.8)
+
+
+
+```
+
+We next break the lines where the distance between two consecutive points is the greatest. This results in the final representation: two sets of points, one for each line, where the points are ordered to give a pleasing line drawing (left-hand panel of figure below). Using a two polygons, one that is black for the outer shape and one that is white for the "hole", we can create a silhouette of the teapot.
+Typically, the outer shape will be the line that has the most points and if we color this polygon first in black and the remaining polygon(s) on top of it in white we will get the desired results (right-hand panel of figure below).   
+
+```{r, echo=FALSE}
+Dist = findDistance(dsn[contour2,])
+noBreaks=1
+breakPoints = which(Dist >= Dist[order(-Dist)][noBreaks])
+lineList = list()
+
+for (j in 1:length(breakPoints)) {
+  if (j==1) {startTmp = 1} else {startTmp=breakPoints[j-1]}
+  lineList[[j]] = startTmp:(breakPoints[j]-1)
+}
+if (breakPoints>0) {
+lineList[[j+1]] = breakPoints[j]:length(contour2)
+}
+lineLengths = sapply(lineList,length)
+#useful to have the first line be the biggest.
+
+lineLengths = order(-lineLengths)
+
+newdsn = dsn[contour2[ lineList[[lineLengths[1] ]] ],]
+newdsn = cbind(newdsn, rep(1,nrow(newdsn)))
+
+for (j in 2:length(lineLengths)) {
+toadd = dsn[contour2[ lineList[[lineLengths[j] ]] ],]
+toadd = cbind(toadd, rep(j,nrow(toadd)))
+newdsn = rbind(newdsn,toadd)  
+}
+
+  par(pty="s",ann=F,mfrow=c(1,2),bg="white",mai=0*c(1,1,1,1))
+
+makePlot(newdsn,axes=F)
+plot(NULL,ylim=lim0,xlim=lim0,axes=F)
+lineVec = unique(newdsn[,3])
+for (i in lineVec) {
+  polygon(newdsn[newdsn[,3]==i,],col=colorVec[i])
+}
+
+```
+
+We can now draw the silhouette ontop of the photograph to see if the approach worked.  We then make a storyboard for an animation using this approach.  Once we have the two sets of lines we can smooth them (by fitting cubic splines through them), distort them and rotate them to create something resembling a bird. Instead of using black and white, we can use the color of the teapot and the color of the shadow in the photograph.  We can reverse the distortion and then gradually fade between the silhouette and the actual photograph. Such an animation is intended to be mesmerizing as the viewer starts seeing a child like drawing being made in 2D space that then smoothly into the everyday 3D world of a teapot on a deck.  Then animation then reverses itself and goes on forever.
+
+```{r, echo=FALSE}
+shiftX=0
+photo <- readJPEG( '~//dwdRstuff//imageFolders//Teapot//teapotSquare.jpg')
+aspect = 480 / 480 #resolution aspect = 1000 / 665
+
+range=.9
+par(pty="s",ann=F,mfrow=c(1,1),bg="white",mai=0*c(1,1,1,1))
+dontDoit = TRUE  #only do one of the two graphs
+if (dontDoit == FALSE) {
+plot(range*c(-1+shiftX,1),range*c(-1,1),type="n",axes=FALSE)
+rasterImage(photo,xleft=-1,xright=1,ybottom=-1/aspect,ytop=1/aspect)
+
+newdsn2 = shift(.7*newdsn[,1:2],c(.04,-.04))
+lineVec = unique(newdsn[,3])
+for (i in lineVec) {
+  polygon(newdsn2[newdsn[,3]==i,],col=tRubik[i])
+}
+}
+range=.9
+#par(pty="s",ann=F,mfrow=c(1,2),bg="white",mai=0*c(1,1,1,1))
+plot(range*c(-1+shiftX,1),range*c(-1,1),type="n",axes=FALSE)
+rasterImage(photo,xleft=-1,xright=1,ybottom=-1/aspect,ytop=1/aspect)
+
+newdsn2 = shift(.7*newdsn[,1:2],c(.04,-.04))
+lineVec = unique(newdsn[,3])
+for (i in lineVec) {
+  polygon(newdsn2[newdsn[,3]==i,],col=colorVec2[i],border=NA)
+}
+
+
+```
+```{r, echo=FALSE}
+teaPotOnDeck = function(nknots0 = c(100,100),colorVec0=colorVec2,alpha=0.4,alpha2=1,polygons=TRUE,howmuch=c(1,1),distort=c(0,0,0)){
+  transColor = makeTransparent(t(col2rgb(colorVec0)/255),alpha)
+ transColor2 = makeTransparent(t(col2rgb(colorVec0)/255),alpha2)
+
+range=.9
+#par(pty="s",ann=F,mfrow=c(1,2),bg="white",mai=0*c(1,1,1,1))
+plot(range*c(-1+shiftX,1),range*c(-1,1),type="n",axes=FALSE)
+rasterImage(photo,xleft=-1,xright=1,ybottom=-1/aspect,ytop=1/aspect)
+squ1 = rbind(c(-1,-1),c(1,-1),c(1,1),c(-1,1))
+polygon(squ1,border=NA,col=transColor[2])
+newdsn2 = shift(.7*newdsn[,1:2],c(.04,-.04))
+lineVec = unique(newdsn[,3])
+for (i in lineVec) {
+  line_tmp0 = newdsn2[newdsn[,3]==i,1:2]
+  line_tmp = smoothedShape3(line_tmp0,nknots = min(nknots0[i],nrow(line_tmp0)) )
+  line_tmp = shift(rotate(line_tmp,distort[1]) %*% diag(c(1,1+distort[2])),c(0,distort[3]))
+  if (polygons==TRUE) {
+  polygon(line_tmp,col=transColor2[i],border=NA) }
+  else
+    lines(line_tmp[1:floor(howmuch[i]*nrow(line_tmp)),],col=transColor2[1]) 
+}
+  
+}
+par(pty="s",ann=F,mfrow=c(1,1),bg="white",mai=0*c(1,1,1,1))
+colorVecTeaPot = c(rgb(239,245,245,maxColorValue=255),rep(rgb(55,55,55,maxColorValue=255),20))
+
+teaPotOnDeck(nknots0 = c(10,10),colorVec0=colorVecTeaPot,alpha=1,polygons=T,howmuch=c(1,1),distort=c(pi/2,0.3,-.1))
+```
+
+
+```{r, echo=FALSE}
+par(pty="s",ann=F,mfrow=c(5,3),bg="white",mai=0*c(1,1,1,1))
+teaPotOnDeck(nknots0 = c(10,10),colorVec0=colorVecTeaPot,alpha=1,polygons=FALSE,howmuch=c(.3,0),distort=c(pi/2,0.3,-.1))
+teaPotOnDeck(nknots0 = c(10,10),colorVec0=colorVecTeaPot,alpha=1,polygons=FALSE,howmuch=c(.67,0),distort=c(pi/2,0.3,-.1))
+teaPotOnDeck(nknots0 = c(10,10),colorVec0=colorVecTeaPot,alpha=1,polygons=FALSE,howmuch=c(1,0),distort=c(pi/2,0.3,-.1))
+teaPotOnDeck(nknots0 = c(10,10),colorVec0=colorVecTeaPot,alpha=1,polygons=FALSE,howmuch=c(1,.3),distort=c(pi/2,0.3,-.1))
+teaPotOnDeck(nknots0 = c(10,10),colorVec0=colorVecTeaPot,alpha=1,polygons=FALSE,howmuch=c(1,.6),distort=c(pi/2,0.3,-.1))
+teaPotOnDeck(nknots0 = c(10,10),colorVec0=colorVecTeaPot,alpha=1,polygons=FALSE,howmuch=c(1,1),distort=c(pi/2,0.3,-.1))
+teaPotOnDeck(nknots0 = c(10,10),colorVec0=colorVecTeaPot,alpha=1,distort=c(pi/2,0.3,-.1))
+teaPotOnDeck(nknots0 = c(20,20),colorVec0=colorVecTeaPot,alpha=1,distort=c(pi/2,0.3,-.1)/2)
+teaPotOnDeck(nknots0 = c(40,40),colorVec0=colorVecTeaPot,alpha=1,distort=c(pi/2,0.3,-.1)/4)
+teaPotOnDeck(nknots0 = c(80,80),colorVec0=colorVecTeaPot,alpha=1)
+teaPotOnDeck(nknots0 = c(400,160),colorVec0=colorVecTeaPot,alpha=1)
+teaPotOnDeck(nknots0 = c(400,160),colorVec0=colorVecTeaPot,alpha=.8)
+teaPotOnDeck(nknots0 = c(400,160),colorVec0=colorVecTeaPot,alpha=.8,alpha2=.8)
+teaPotOnDeck(nknots0 = c(400,160),colorVec0=colorVecTeaPot,alpha=.5,alpha2=.5)
+teaPotOnDeck(nknots0 = c(400,160),colorVec0=colorVecTeaPot,alpha=0,alpha2=0)
+
+
+```
