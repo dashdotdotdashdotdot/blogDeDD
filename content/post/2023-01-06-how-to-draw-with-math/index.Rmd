@@ -2,25 +2,25 @@
 title: How to Draw with Math
 author: DWD
 date: '2023-01-06'
-slug: how-to-draw-with-math
 categories:
   - R art
 tags:
   - ConnectTheDots
+slug: how-to-draw-with-math
 ---
 
 
 I have always been fascinated with line drawings and silhouettes. How could something two dimensional convey a sense of emotion and personality? Also, a line drawing can convey the illusion of depth. Further, a two dimensional drawing can be mapped to a 3D surface and when successful it can convey a sense of the shape of the surface -- the third dimension.
 
-In this note, I show an approach I developed to create a "connect the dots" representation of a simple line drawing or a simple silhouette. By connect the dots, I am thinking of an exercise one may find in a child's coloring book where a set of dots are numbered. When the child draws line segments connecting each consecutive point a recognizable drawing emerges. I will shows applications of such a representation.
+In this note, I show an approach I developed to create a "connect the dots" representation of a line drawing or a silhouette. By connect the dots, I am thinking of an exercise one may find in a child's coloring book where a set of dots are numbered. When the child draws line segments connecting each consecutive point a recognizable drawing emerges. I will also show applications of such a representation.
 
 # Alternative Approaches
 
-There are many YouTube videos on how to create a silhouette with a pen tool in software such as Adobe Illustrator, Adobe Photoshop, Graphic Concepts.  There are illustrators that can obtain excellent results with a pen tool (cf. the work of Malika Favre). The illustrations can be saved as a .svg file, in which the silhouette that was created using the pen tool is represented as a set of Bezier curves.  One could presumably write a program to extract the parameters of each path from the .svg file and then transform these mathematically. I prefer my approach for two reasons. I did spend sometime making silhouettes using a pen tool in photoshop. While I could get satisfactory results with patience, I find it much more satisfying to drawing with an Apple Pencil, and the result has more of a _hand drawn_ feel that I like.  The second reason is that the resulting "connect the dots" representation is a much more intuitive representation that is easy to work with mathematically.
+There are many YouTube videos on how to create a silhouette with a pen tool in software such as Adobe Illustrator and Adobe Photoshop.  There are illustrators that can obtain excellent results with a pen tool (cf. the work of Malika Favre). The illustrations can be saved as a .svg file, in which the silhouette that was created using the pen tool is represented as a set of Bezier curves.  One could presumably write a program to extract the parameters of each path from the .svg file and then transform these mathematically. I prefer my approach for two reasons. I did spend sometime making silhouettes using a pen tool in Photoshop. While I could get satisfactory results with patience, I find it much more satisfying to draw with an Apple Pencil, and the result has more of a _hand drawn_ feel that I like.  The second reason is that the resulting "connect the dots" representation is a much more intuitive representation that is easy to work with mathematically.
 
 # The Approach
 
-The first step is to start with an image that one could trace with either a graphite pencil using tracing paper or an apple pencil and ipad. I typically use the latter. I will start with a picture of a teapot that I took (below). The teapot is a non trivial example of the problem because it "has a hole" and the outer silhouette is not a "convex" set.
+The first step is to start with an image that one could trace with either a graphite pencil using tracing paper or an apple pencil and ipad. I typically use the latter. I will start with a photograph of a teapot that I took (below). The teapot is a non trivial example of the problem because it "has a hole" and the outer silhouette is not a "convex" set.
 
 ```{r, echo = FALSE }
 rm(list=ls()) #remove all existing axes
@@ -92,7 +92,7 @@ obs007 = createObservations(drawing1)
 
 ```
 
-When we bring it in as an image, we have a pixel representation where some of the pixels are dark colors and some of the pixels are light colors (the colors are represented with an RGB color model). To use a statistical approach, we want to transform the pixels representations into "observations." One can think of an observations as a pixel in the image that was marked by the pencil. We seek a table of pixels with two columns -- the X and Y coordinates of the marked pixels. The function as.raster converts the image into an array of columns and rows where each cell is an RGB color. From this representation, we convert it into a data table (actually a data frame) in which one column is the row number of the pixel (i.e., the x coordinate) and another column is the column number of the pixel (i.e., the y coordinate) and the third column is the color of the pixel as represented using the RGB colorspace. From the RGB values, we select the pixels where the resulting average of each color is less than 100. These are the dark pixels as we are working with a high contrast image with little color. We now have a representation of the image as `r format(nrow(obs007),big.mark=",")` points in two dimensional space (left-hand panel in the figure below). As the zoom (center panel of figure below) reveals, this is not a mathematically convenient form to work with as there are many dots due to the thickness of the line (the thickness is typically about 2 points). At this stage, if one "connects the dots" one actually recovers something resembling the "convex hull" of the teapot (right-hand panel in figure below), which is not what we want.  This happens because when we converted the observations from an array to a table the observations became sorted by row of the pixel first and then the column of the pixel second. 
+When we bring it in as an image, we have a pixel representation where some of the pixels are dark colors and some of the pixels are light colors (the colors are represented with an RGB color model). To use a statistical approach, we want to transform the pixels representations into "observations." One can think of an observations as a pixel in the image that was marked by the pencil. We seek a table of pixels with two columns -- the X and Y coordinates of the marked pixels. The function as.raster converts the image into an array of columns and rows where each cell is an RGB color. From this representation, we convert it into a data table (actually a data frame in the terminology of R) in which one column is the row number of the pixel (i.e., the x coordinate) and another column is the column number of the pixel (i.e., the y coordinate) and the third column is the color of the pixel as represented using the RGB colorspace. From the RGB values, we select the pixels where the resulting average of each color is less than 100. These are the dark pixels as we are working with a high contrast image with little color. We now have a representation of the image as `r format(nrow(obs007),big.mark=",")` points in two dimensional space (left-hand panel in the figure below). As the zoom (center panel of figure below) reveals, this is not a mathematically convenient form to work with as there are many dots due to the thickness of the line (the thickness is typically about 2 points). At this stage, if one "connects the dots" one actually recovers a drawing that covers the teapot, but also the hole formed by the handle of the teapot and the space between the spout and body of the teapot (right-hand panel in figure below), which is not what we want.  This happens because when we converted the observations from an array to a table the observations became sorted by row of the pixel first and then the column of the pixel second. 
 
 ```{r, echo=FALSE}
 par(pty="s",ann=F,mfrow=c(1,3),bg="white",mai=0*c(1,1,1,1))
@@ -107,7 +107,7 @@ text(0,1,"Connecting the Dots with Wrong Ordering")
 
 ```
 
-One approach to reduce the number of points is to use a statistical learning technique called _K-Means Clustering_. What this approach does is find a specified number of clusters and assign each observation to a cluster and computes the distance of each observation from its cluster. It then chooses the clusters to minimize the sum of the distance of each observations from its cluster. We can extract the clusters from the procedure and reduce `r format(nrow(obs007),big.mark=",")` observations into `r format(noClusters,big.mark=",")` points (for example). The left-hand panel of the figure below shows the new set of dots. The rightpanel shows a "connect the dots" version of these points which results in a jarring configuration of jagged lines.  The clusters are not yet in the correct order for a connect the dots representation.
+One approach to reduce the number of points is to use a statistical learning technique called _K-Means Clustering_. What this approach does is find a specified number of clusters and assign each observation to a cluster and computes the distance of each observation from its cluster. It then chooses the clusters to minimize the sum of the distance of each observations from its cluster. We can extract the clusters from the procedure and reduce `r format(nrow(obs007),big.mark=",")` observations into `r format(noClusters,big.mark=",")` points (for example). The left-hand panel of the figure below shows the new set of dots. The right-hand panel shows a "connect the dots" version of these points which results in a jarring configuration of jagged lines.  The clusters are not yet in the correct order for a connect the dots representation.
 
 ```{r, echo=FALSE, warning=F, echo=FALSE}
 par(pty="s",ann=F,mfrow=c(1,2),bg="white",mai=0*c(1,1,1,1))
@@ -157,7 +157,7 @@ text(0,1,"Connecting Dots using Next Closest with a Best 1st Dot",cex=.8)
 
 ```
 
-We next break the lines where the distance between two consecutive points is the greatest. This results in the final representation: two sets of points, one for each line, where the points are ordered to give a pleasing line drawing (left-hand panel of figure below). Using a two polygons, one that is black for the outer shape and one that is white for the "hole", we can create a silhouette of the teapot.
+We next break the lines where the distance between two consecutive points is the greatest. This results in the final representation: two sets of points, one for each line, where the points are ordered to give a pleasing line drawing (left-hand panel of figure below). Using two polygons, one that is black for the outer shape and one that is white for the "hole", we can create a silhouette of the teapot.
 Typically, the outer shape will be the line that has the most points and if we color this polygon first in black and the remaining polygon(s) on top of it in white we will get the desired results (right-hand panel of figure below).   
 
 ```{r, echo=FALSE}
@@ -198,7 +198,7 @@ for (i in lineVec) {
 
 ```
 
-We can now draw the silhouette ontop of the photograph to see if the approach worked.  We then make a storyboard for an animation using this approach.  Once we have the two sets of lines we can smooth them (by fitting cubic splines through them), distort them and rotate them to create something resembling a bird. Instead of using black and white, we can use the color of the teapot and the color of the shadow in the photograph.  We can reverse the distortion and then gradually fade between the silhouette and the actual photograph. Such an animation is intended to be mesmerizing as the viewer starts seeing a child like drawing being made in 2D space that then smoothly into the everyday 3D world of a teapot on a deck.  Then animation then reverses itself and goes on forever.
+We can now draw the silhouette ontop of the photograph to see if the approach worked.  We then make a storyboard for an animation using this approach.  Once we have the two sets of lines we can smooth them (by fitting cubic splines through them), distort them and rotate them to create something resembling a bird. Instead of using black and white, we can use the color of the teapot and the color of the shadow in the photograph.  We can reverse the distortion and then gradually fade between the silhouette and the actual photograph. Such an animation is intended to be mesmerizing as the viewer starts seeing a child like drawing being made in 2D space that then smoothly transforms into the everyday 3D world of a teapot on a deck.  The animation then reverses itself and goes on forever.
 
 ```{r, echo=FALSE}
 shiftX=0
