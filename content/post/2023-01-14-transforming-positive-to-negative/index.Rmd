@@ -1,0 +1,211 @@
+---
+title: Transforming Positive to Negative
+author: R package build
+date: '2023-01-14'
+categories:
+  - R art
+tags:
+  - ConnectTheDots
+  - Tesselation
+slug: transforming-positive-to-negative
+---
+
+In this note, we show how to create the "negative space" around a silhouette starting with a silhouette that is represented with a set of points in 2D space.  With the combination of the silhouette and its negative space we could make a variety of tessellations. We will focus on transforming the positive space into the negative space and thereby make the negative the positive in a tessellation context (see middle row of the last figure). We first need to choose a silhouette. We will start with a shape that is simple, organic and easily recognizable.  Further, in order to get a pleasing transformation, we will want a silhouette that allows for a "smooth mapping" of points on one side of the silhouette to points on the other.  We will use a silhouette that has been derived from a hand-cut silhouette.
+
+```{r, out.width="50%", echo=FALSE }
+#rm(list=ls())
+#devtools::load_all(".")
+source('~/dwdRstuff/ArtMathdeDD/R/makeDrawingsData.R')
+source('~/dwdRstuff/utilities/xyToPole.R')
+source('~/dwdRstuff/utilities/shift.R')
+
+library('ArtMathdeDD')
+library('aPhotoDeDD')
+
+par(pty="s",ann=FALSE,mfrow=c(1,1),bg="grey50",mai=1*c(1,1,1,1))
+drawing1=makeDrawingsData(52)
+bigLine= which.max(as.matrix(table(drawing1$line)))
+drawing1 = drawing1[drawing1[,3]==bigLine,1:2]
+plot(drawing1[,1:2],ylim=lim0,xlim=lim0,typ="l")
+```
+The next step is to transform the drawings so the points start just above the x axis and move in a counter clockwise direction.  See figure below in which we number every 30th point.
+
+```{r,  out.width="50%", echo=FALSE}
+transformDrawing = function(drawing0) {
+thetaR1_0 = xyToPole(drawing0[,1:2])
+
+start0 = which.min(( (thetaR1_0[,1]-0)^2 + 100*(thetaR1_0[,1] < 0) ) )
+rows1 =nrow(drawing0)
+
+index1 = c(start0:rows1,1:(start0-1))
+indexV2 = c(start0:1,rows1:(start0+1))
+tsts = index1[floor(c(1,length(index1)/4,2*length(index1)/4))]
+lookAt = thetaR1_0[tsts,1]*180/pi
+lookAt = lookAt + 360*(lookAt<0)
+#plot(drawing0[,1:2],col="white")
+#text(drawing0[tsts,1],drawing0[tsts,2],1:3)
+
+if (lookAt[3]<lookAt[2]) {index2 = indexV2} else {index2 = index1}
+drawing0_2 = drawing0[index2,]
+thetaR2 = thetaR1_0[index2,]
+#plot(thetaR2[,1])
+thetaR2[,1] = thetaR2[,1] + 2*pi*(thetaR2[,1]<=0)
+thetaR2[1,1] = 0
+thetaR2[rows1,1] = 2*pi
+
+#plot(thetaR2[,1],typ="l",lwd=2)
+smoothTheta = thetaR2[,1]
+for (i in 2:length(smoothTheta)) {
+  if (smoothTheta[i-1] > smoothTheta[i]) {smoothTheta[i]=smoothTheta[i-1]}
+}
+#lines(1:rows1,smoothTheta,col="red")
+#plot(drawing0[,1:2],col="white")
+#text(drawing0_2[floor(seq(1,nrow(drawing0),length=20)), 1],
+#    drawing0_2[floor(seq(1,nrow(drawing0),length=20)), 2],1:20,
+#    col="red")
+
+result = cbind(drawing0_2,thetaR2,smoothTheta)
+return(result) }
+
+tDrawing1 = transformDrawing(drawing1)
+
+par(pty="s",ann=FALSE,mfrow=c(1,1),bg="grey50",mai=0*c(1,1,1,1))
+plot(tDrawing1[,1:2],typ="l",ylim=lim0,xlim=lim0,axes=FALSE)
+points123 = floor(seq(1,nrow(tDrawing1),length=21))[1:20]
+text(tDrawing1[points123, 1],
+    tDrawing1[points123, 2],points123,
+    col="white",pos=4)
+
+```
+
+We can then construct the negative space of silhouette in few steps.  We find the "top" , "bottom", "left most", "right most" points of the drawing.  From these points we can compute the four corners of the rectangle that encloses the drawing.  The outline of this rectangle is drawn dark grey in the figure below.  We define the left-hand negative shape as the polygon formed by the left-hand corners of the enclosing rectangle and the left-hand side of the drawing (the points between the top and the bottom on the left side of the drawing). Likewise for the right-hand negative shape. We then shift the left-hand negative shape to the right by the width of the enclosing rectangle.  The negative space silhouette is the union of the right-hand negative shape and the shifted left-hand negative shape.  Care needs to be taken to order the points correctly. We now have a pairs of shapes that 'tessellates' in the sense that one could fill an infinitely large table with cut outs of both the silhouette and negative space silhouette as seen in the figure below.
+
+```{r,  out.width="50%", echo=FALSE}
+top = which.max(tDrawing1[,2]); bottom = which.min(tDrawing1[,2])
+left = which.min(tDrawing1[,1]); right = which.max(tDrawing1[,1])
+
+bRect = rbind( c(tDrawing1[right,1],tDrawing1[top,2]),        c(tDrawing1[left,1],tDrawing1[top,2]), 
+               c(tDrawing1[left,1],tDrawing1[bottom,2]
+                 ),
+                c(tDrawing1[right,1],tDrawing1[bottom,2]),
+               c(tDrawing1[right,1],tDrawing1[top,2]) 
+               )
+leftNeg = rbind(c(tDrawing1[left,1],tDrawing1[top,2]),
+                tDrawing1[top:bottom,1:2],
+                c(tDrawing1[left,1],tDrawing1[bottom,2])
+                )
+rightNeg = rbind(c(tDrawing1[right,1],tDrawing1[top,2]),
+                tDrawing1[top:1,1:2],tDrawing1[nrow(tDrawing1):bottom,1:2],
+                c(tDrawing1[right,1],tDrawing1[bottom,2])
+)
+
+leftAsright = shift(leftNeg,c(tDrawing1[right,1]-tDrawing1[left,1],0))
+
+negative = rbind(rightNeg,leftAsright[nrow(leftAsright):1,])
+dX = tDrawing1[right,1]-tDrawing1[left,1]
+negative = shift(negative,c(-dX/2,0))
+#######
+tNegative = transformDrawing(negative)
+#plot(tNegative)
+par(pty="s",ann=FALSE,mfrow=c(1,1),bg="grey60",mai=0*c(1,1,1,1))
+plot(NULL,ylim=lim0,xlim=lim0+.40,axes=F)
+polygon(tDrawing1[,1:2],col="black",border=NA)
+polygon(shift(negative[,1:2], c(1.0*dX/2,0)),col=rgb(1,1,1),border=NA)
+#polygon(shift(tDrawing1[,1:2], 2*c(1.1*dX/2,0)),col=rgb(1,0,0,.5))
+polygon(bRect,col=rgb(1,1,1,0),border="grey40",lwd=3)
+
+```
+
+We wish to smoothly transform the black shape into the white shape.  We can do this be taking the weighted average of the two shapes, but before we do that we need a "one-to-one" mapping of the points in the black shape and the points in the white shape. Further, in order for transformation to be pleasing, the points need to align well.  We accomplish this by creating a new versions of each shape in which each point on corresponding side of each shapes aligns horizontally (has the same coordinate see figure).  We accomplish this by creating 4 functions that take a value for the Y coordinate and returns the X coordinate for the left and right side of each figure.  We accomplish this by ordering the points correctly and using linear interpolation.  We than use this function to map 1,000 evenly spaced values of Y to each side of each shape to build up new versions of the figures.
+
+```{r,  out.width="50%", echo=FALSE}
+makeRightNLeft = function( drawingIn,useThetas=T) {
+if (useThetas ==T) {
+left = drawingIn[(drawingIn[,5] > pi/2) & (drawingIn[,5] < 3* pi/2) ,]
+
+rightTmp = drawingIn[(drawingIn[,5] < pi/2),]
+rightTmp2 = drawingIn[(drawingIn[,5] > 3*pi/2),]
+right = rbind( rightTmp2,rightTmp)
+right[,5] = right[,5] - 2*pi*(right[,5]>3*pi/2)} else
+  
+top = which.max(drawingIn[,2]); bottom=which.min(drawingIn[,2])
+
+leftIndex = top:bottom
+rightIndex = c(bottom:nrow(drawingIn),1:top )
+
+left = drawingIn[leftIndex,]
+right = drawingIn[rightIndex,]
+  
+return(list(right,left))
+}
+
+rightLeftPositive = makeRightNLeft(tDrawing1,useThetas=F)
+rightLeftNegative = makeRightNLeft(tNegative,useThetas=F)
+
+#plot(rightLeftPositive[[1]][,1:2],typ="l")
+#plot(rightLeftNegative[[2]][,1:2],typ="l")
+
+thetasRight = seq(-1/2,1/2,length=200)*pi
+thetasleft = seq(1/2,3/2,length=200)*pi
+Ys = seq(-1,1,length=1000)
+
+#rightLeft=rightLeftNegative
+makeNewShape <- function(rightLeft) {
+newRightX1 = approx(rightLeft[[1]][,2],rightLeft[[1]][,1],Ys,rule=2,ties="ordered")[[2]]
+newRightY1 = approx(rightLeft[[1]][,2],rightLeft[[1]][,2],Ys,rule=2,ties="ordered")[[2]]
+newLeftX1 = approx(rev(rightLeft[[2]][,2]),rev(rightLeft[[2]][,1]),Ys,rule=2,ties="ordered")[[2]]
+newLeftY1 = approx(rev(rightLeft[[2]][,2]),rev(rightLeft[[2]][,2]),Ys,rule=2,ties="ordered")[[2]]
+
+#plot(newRightX1,newRightY1,typ="l",ylim=lim0,xlim=lim0)
+#lines(newLeftX1,newLeftY1)
+newRight1 = cbind(newRightX1,newRightY1)
+newLeft1 = cbind(newLeftX1,newLeftY1)
+
+new1 = rbind(newRight1,newLeft1[nrow(newLeft1):1,])
+return(new1)
+}
+
+
+#drawingIn =rightLeftNegative
+newPlus = makeNewShape(rightLeftPositive)
+newNeg = makeNewShape(rightLeftNegative)
+
+par(pty="s",ann=FALSE,mfrow=c(1,1),bg="grey50",mai=0*c(1,1,1,1))
+plot(NULL,ylim=1.0*lim0,xlim=1.0*lim0,axes=FALSE)
+newNeg_tmp= shift(newNeg[,1:2],c(0.5,0))
+newPos_tmp= shift(newPlus[,1:2],c(-0.5,0))
+
+polygon(newNeg_tmp,col="white",border=NA)
+polygon(newPos_tmp,col="black",border=NA)
+
+points123 = floor(seq(1,nrow(newNeg_tmp),length=21))[1:20]
+text(newPos_tmp[points123, 1],
+    newPos_tmp[points123, 2],points123,
+    col="white")
+text(newNeg_tmp[points123, 1],
+    newNeg_tmp[points123, 2],points123,
+    col="black")
+
+```
+
+The top row of the figure below is the "positive shape" repeated 10 times and each time shift to the right by the width of the enclosing rectangle.  The bottom row of the figure is the same thing accept is uses the "negative shape".  The positive shape emerges from between the negative shapes.  In the middle row, the "positive shape" is gradually transformed into the "negative shape" and as a result the "positive shape" emerges from the ground as we move to the right.  It aligns with the top row on the left and the bottom row on the right.
+
+MC Escher would often take a geometric tessellation and gradually transform it into a pair of organic forms.  What I am doing here is inspired by that work, but I am not aware of him (or others) doing exactly the same -- transforming an organic shape into the negative of the shape. I have not seen it.
+
+```{r, echo=FALSE}
+par(pty="s",ann=FALSE,mfrow=c(1,1),bg="grey50",mai=0*c(1,1,1,1))
+plot(NULL,typ="l",ylim=5*c(-dX,dX),xlim=5.1*c(-dX,dX),axes=F)
+
+for (i in 0:9){
+  weight = min(1-min((i-1)/7,1),1)
+  new = weight*newPlus + (1-weight)*newNeg
+  new2 = smoothedShape3(new[,1:2],nknots=320)
+  new2=new
+  polygon(shift(new2,c(-5*dX+i*1.0*dX,0)),col="white",border="NA")
+  polygon(shift(newPlus,c(-5*dX+i*1.0*dX,2.5)),col="white",border="NA")
+  polygon(shift(newNeg,c(-5*dX+i*1.0*dX,-2.5)),col="white",border="NA")
+
+}
+
+```
+
