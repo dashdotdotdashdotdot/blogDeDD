@@ -1,5 +1,5 @@
 ---
-title: Morphing between posiitive and Negative
+title: Morphing between positive and Negative
 author: DWD
 date: '2022-12-14'
 slug: morphPlusNeg

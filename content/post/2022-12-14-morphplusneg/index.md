@@ -1,5 +1,5 @@
 ---
-title: Morphing between posiitive and Negative
+title: Morphing between positive and Negative
 author: DWD
 date: '2022-12-14'
 slug: morphPlusNeg
@@ -71,7 +71,7 @@ for (i in 1:length(stack2) ){
 tst =  stack1[i]
 stack2[i]=makeTessalation(tst,rows=1,columns=3,decay=-2.8,center=c(2,1),option=1)
 }
-stack1[5]
+stack2[6]
 ```
 
 <img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-3-1.png" width="100%" />
