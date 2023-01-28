@@ -9,7 +9,7 @@ tags:
   - aPhotoDeDD
 ---
 
-This notebook demonstrates some of the basic photo manipulation that I like that can be done with the package aPhotoDeDD ((current location is (https://github.com/dashdotdotdashdotdot/aPhotoDeDD)).  One image caps all the pixels whose that are lighter than a grey value to the grey value.  The other sets all the pixels that are less than the grey texture.  The iconic image of Marilyn Monroe is in the public domain:
+This notebook demonstrates some of the basic photo manipulation that I like that can be done with the package aPhotoDeDD ((current location is (https://github.com/dashdotdotdashdotdot/aPhotoDeDD)).  One image caps all the pixels whose that are lighter than a grey value to the grey value.  The other sets all the pixels that are less than the grey texture.  The iconic image of Che Guevera is in the public domain:
 
 
 
@@ -27,12 +27,12 @@ library(magick)
 
 ```r
 pixels <- 400  
-pic1 <- demo_dd("MM.jpg")
+pic1 <- demo_dd("Che.jpg")
 pic1 <- adjustPicture(pic1,bsh=c(100,0,100),pixels=pixels,return=0)   #returns an image with a maximum dimension as Pixels
 pic1
 ```
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-1-1.png" width="148" />
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-1-1.png" width="151" />
 
 
 ```r
@@ -67,7 +67,7 @@ bigPicBoth <- image_composite(bigPicDark, picLight, operator = "atop", offset = 
 bigPicBoth
 ```
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-1.png" width="343" />
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-1.png" width="348" />
 
 We can also do a little animation:
 
@@ -96,6 +96,6 @@ One can output a gif if desired.
 ```r
 outputGif <- FALSE
 if (outputGif == TRUE) {
-  image_write_gif(alldone, "MM.gif")
+  image_write_gif(alldone, "Che.gif")
 }
 ```
