@@ -9,7 +9,7 @@ tags:
   - aPhotoDeDD
 ---
 
-This notebook demonstrates some of the basic photo manipulation that I like that can be done with the package aPhotoDeDD ((current location is (https://github.com/dashdotdotdashdotdot/aPhotoDeDD)).  One image caps all the pixels whose that are lighter than a grey value to the grey value.  The other sets all the pixels that are less than the grey texture.  The iconic image of Che Guevera is in the public domain:
+This notebook demonstrates some of the basic photo manipulation that I like that can be done with the package aPhotoDeDD ((current location is (https://github.com/dashdotdotdashdotdot/aPhotoDeDD)).  One image caps all the pixels whose that are lighter than a grey value to the grey value.  The other sets all the pixels that are less than the grey texture.  The iconic image of Che Guevera is in the public domain.
 
 
 
