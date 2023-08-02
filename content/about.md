@@ -13,16 +13,16 @@ This is a blog to organize and keep track of my work in one place. I started it 
 [@dashdotdotdashdotdot](https://www.instagram.com/dashdotdotdashdotdot/)
 
 
-### My paper in the Bridges 2023 Mathematical Art Conference (Bridges Halifax 2023):
-##### _Drawing with Statistics_
+## My paper in the Bridges 2023 Mathematical Art Conference (Bridges Halifax 2023):
+#### _Drawing with Statistics_
 
 ![](/./about_files/Knights.jpg)
 
 [Bridges Halifax 2023 Conference](https://archive.bridgesmathart.org/2023/bridges2023-157.html#gsc.tab=0)
 
 
-### My paper in the Bridges 2022 Mathematical Art Conference (Bridges Aalto 2022):
-##### _Spiral Based Point Cloud Representations of Sculptures_
+## My paper in the Bridges 2022 Mathematical Art Conference (Bridges Aalto 2022):
+### _Spiral Based Point Cloud Representations of Sculptures_
 
 <img src="/./about_files/venus_cyano.jpg" alt="" width="300px" height="300px"/>
 
