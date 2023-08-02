@@ -27,7 +27,7 @@ photography with such a mechanism. To determine where the light is at
 any point in time, one needs to know the position of the hand on the
 clock as well as the position of the clock on the turntable. The radius
 of the clock, $r_1$, and the radius of the turntable, $r_2$, matter as
-well but this we will view as fixed over time.
+well but this we will view as fixed over time.  The basic insight is that the pattern one sees is determined by the ratio of how long it takes the turntable to do a complete revolution to how long it takes the clock to do a complete revolution. If this ratio is irrational, then the curve will never reconnect with itself.
 
 Let $\theta_1(t) = t2\pi$ be the angle of the clock hand on the clock
 over time. Let $\theta_2(t) = \frac{tp2\pi}{q}$ be the angle of the
@@ -52,17 +52,18 @@ The first function, $f_1$ maps $\theta_1$ to $XYZ$. The second function
 $f_2$ maps $XYZ$ and $\theta_2$ to $XYZ$. The third maps XYZ and
 $\theta_2$ to $XYZ$.
 
+$f_1$ places the position of the hand of the clock on the clock using two dimensional polar coordinates in the $XY$ plan.
 The $f_1$: $R \rightarrow R^3$ is defined as
 $$ f_1( \theta_1) = [r_1sin(\theta_1), r_1cos(\theta_1), 0] $$
-
+$f_2$ rotates the plane of the clock using a rotation matrix:
 The $f_2$: $R + R^3 \rightarrow R^3$ is defined as
 
-[<img src="images/formula.png" style="max-width:50%;min-width:50%;fixed:center;"/>]
-
-
+<img src="images/formula.png" style="max-width:50%;min-width:50%;fixed:center;"/>
 
 This function is using matrix multiplication to rotate the X axis
 towards the Z axis while keeping the Y axis fixed.
+
+$f_3$ is determining the position of the center of the clock in the XZ plane using two dimensional polar coordinates.
 
 The $f_3$: $R + R^3 \rightarrow R^3$ is defined as
 
@@ -78,7 +79,7 @@ $$  f_3(f_2(f_1(\theta_1),\theta_2),\theta_2) $$
 or
 
 $$  f_3\bigg(f_2 \bigg(f_1 \bigg( \frac{t2\pi}{q} \bigg), \frac{t2\pi}{q} \bigg), \frac {t2\pi}{p} \bigg) $$
-\# Proposition
+# Proposition
 
 If $p$ and $q$ are integers, when $t = pq$, the curve coincides with the
 curve when $t = 0$.
@@ -86,7 +87,7 @@ curve when $t = 0$.
 Further whenever $t = pq + x$, it coincides with the curve when $t$= $x$
 for any $x$.
 
-#Proof
+# Proof
 
 When $t = pq$, $\theta_1 = pq2\pi$ and $\theta_2 = p^2\pi$
 
@@ -108,7 +109,7 @@ $f_3(XYZ,p2\pi) = f_3(XYZ,q2\pi)$ for any integers $p$ and $q$.
     eventually come back to itself and forever repeat.
 
 2)  Conversely, if p/q is not a rational number they will never coincide
-    and the curve will go one forever. (If it did coinicide at some
+    and the curve will go one forever. (If it did coincide at some
     point in finite $t$ it would a rational number as it could be
     represented as the ratio of two integers).
 
@@ -123,10 +124,10 @@ $f_3(XYZ,p2\pi) = f_3(XYZ,q2\pi)$ for any integers $p$ and $q$.
 
 5)  Suppose $p/q = 3/5$. The when $pq$ = 15 they coincide. So that when
     clock goes around 15 times and the turntable goes around 9 times
-    they will conincide. They will also coincide when the clock goes
+    they will coincide. They will also coincide when the clock goes
     around 5 times and the turn table goes are 3 times. Because the
     clock is going around 5 times, you get five inner curves that form a
-    five point star in the center of the torus when viewed from a floor
+    five-point star in the center of the torus when viewed from a floor
     plan. See figure below.
 
 ```{r, echo = FALSE}
