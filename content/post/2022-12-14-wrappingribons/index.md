@@ -1,14 +1,10 @@
 ---
-title: Wrapping Ribbons Around Donuts
-author: DD
-date: '2022-12-14'
-slug: wrappingRibons
-categories:
-  - R art
+title: "Wrapping Ribbons Around Donuts"
+author: "DD"
+date: "2022-12-14"
+categories: R art
 tags: []
-editor_options: 
-  markdown: 
-    wrap: 72
+slug: wrappingRibons
 ---
 
 # Introduction
