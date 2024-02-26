@@ -1,10 +1,12 @@
 ---
-title: Some useful functions for Art II
+title: Some useful functions for Art
 author: DWD
 date: '2024-02-25'
 categories:
   - R art
 ---
+
+I call this one _harmonica_ as it is based on a harmongraph.
 
 ```r
 thetas = seq(0,1,length=1000)*48*pi
@@ -13,4 +15,28 @@ plot(cos(thetas),sin(23*thetas/24),typ='l',axes=FALSE,mai=0*c(1,1,1,1))
 ```
 
 <img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-1-1.png" width="672" />
+This function conveniently tranforms a sin curve to a given top and bottom and control where the sin curve starts zero and the number of waves.  
+
+
+```r
+dougsSign = function(topBottom,NNN,waves=2*pi,start0=0){
+  thetas = seq(0,1,length=NNN)*waves
+  wave = (topBottom[1]-topBottom[2]) *( (sin(thetas+start0)+1)/2) + topBottom[2]
+  return(cbind(thetas,wave))
+}
+
+dY = 1/4
+par(pty='s',ann=F)
+
+plot(NULL, xlim=c(0,2*pi),ylim=c(-1,1),axes=F)
+
+start=32
+stop = 18
+for (i in seq(start,stop,-2)){
+  xy = dougsSign((start-i)*dY/2+c(-1,-1+dY),1000,waves=i*pi)
+lines(2*xy[,1]/i,xy[,2])
+}
+```
+
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-1.png" width="672" />
 
