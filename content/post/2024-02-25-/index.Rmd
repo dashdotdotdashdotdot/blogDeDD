@@ -6,6 +6,9 @@ categories:
   - R art
 ---
 
+This post is to keep track of some functions of mine that I find useful in making mathematical art.
+
+# Harmonica
 I call this one _harmonica_ as it is based on a harmongraph.
 ```{r}
 thetas = seq(0,1,length=1000)*48*pi
@@ -13,6 +16,9 @@ par(pty='s',ann=F,mai=0*c(1,1,1,1))
 plot(cos(thetas),sin(23*thetas/24),typ='l',axes=FALSE)
 ```
 This function computes the distance traveled along a curve as a percentage of total distance traveled, which can be used to create a new curve where the points are evenly spaced.  Works for a curve that is either in 2D or 3D space. One can make an evenly spaced vector by using linear interpolation for lookup table is combination of distance traveled and the x (or y vector) and one "looks up" a set of numbers that are evenly spaced on the unit interval.  In the pictures below the "dots" cluster in the corner in the graph on the right as they are not evenly spaced.
+
+# Traveled
+
 ```{r}
 traveled = function(xy){
   NN = nrow(xy)
@@ -41,7 +47,9 @@ points(xy0,pch=20,col=rgb(1,0,0,.5))
 ```
 
 
-This function conveniently transforms a sin curve to a given top and bottom and control where the sin curve starts zero and the number of waves.  
+# dougsSign
+
+This function conveniently transforms a sin curve to a given top and bottom and controls where the sin curve starts zero and the number of waves.  
 
 ```{r}
 dougsSign = function(topBottom,NNN,waves=2*pi,start0=0){
@@ -63,5 +71,34 @@ lines(2*xy[,1]/i,xy[,2])
 }
 
 
+
 ```
+
+# polly
+
+This function I call polly as I have cousin with that name. It creates a regular polygon using polar coordinates with a default radius of 1.  If starts is set to 0 (or pi/2) is starts at c(0,1) (or c(1,0)), and it moves clockwise.
+```{r}
+polly = function(sides=4,start=0,r=1){
+  thetas=seq(0,1,length=sides+1)*2*pi
+  res=r*cbind(sin(start+thetas),cos(start+thetas))
+  return(res)}
+
+par(pty='s',ann=F,mai=0*c(1,1,1,1),mfrow=c(1,2))
+
+p1=polly()
+p2=polly(start=pi/6)
+p3=polly(start=pi/3)
+    
+plot(p1,t="l",axes=F)
+lines(p2)
+lines(p3)
+
+p1 = polly(12)
+plot(NULL, xlim = c(-1,1),ylim = c(-1,1), axes=F)
+text(p1[,1],p1[,2],1:12)
+for (i in 1:35) {
+  lines(rbind(p1[(i %% 12) + 1,],p1[(i+5) %% 12 + 1,]))  
+}
+```
+
 
