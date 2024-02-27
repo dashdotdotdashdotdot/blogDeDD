@@ -24,10 +24,10 @@ plot(harmonica(waves=22.95),typ='l',axes=FALSE)
 ```
 
 <img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-1-1.png" width="672" />
-This function computes the distance traveled along a curve as a percentage of total distance traveled, which can be used to create a new curve where the points are evenly spaced.  Works for a curve that is either in 2D or 3D space. One can make an evenly spaced vector by using linear interpolation for lookup table is combination of distance traveled and the x (or y vector) and one "looks up" a set of numbers that are evenly spaced on the unit interval.  In the pictures below the "dots" cluster in the corner in the graph on the right as they are not evenly spaced.
 
 # Traveled
 
+This function computes the distance traveled along a curve as a percentage of total distance traveled, which can be used to create a new curve where the points are evenly spaced.  Works for a curve that is either in 2D or 3D space. One can make an evenly spaced vector by using linear interpolation for lookup table is combination of distance traveled and the x (or y vector) and one "looks up" a set of numbers that are evenly spaced on the unit interval.  In the pictures below the "dots" cluster in the corner in the graph on the right as they are not evenly spaced.
 
 ```r
 traveled = function(xy){
