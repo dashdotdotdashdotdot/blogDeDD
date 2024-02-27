@@ -9,12 +9,18 @@ categories:
 This post is to keep track of some functions of mine that I find useful in making mathematical art.
 
 # Harmonica
-I call this one _harmonica_ as it is based on a harmongraph.
+I call this one _harmonica_ as it is based on a harmonagraph.
 
 ```r
-thetas = seq(0,1,length=1000)*48*pi
-par(pty='s',ann=F,mai=0*c(1,1,1,1))
-plot(cos(thetas),sin(23*thetas/24),typ='l',axes=FALSE)
+harmonica = function(NNN=1000,waves=23, ratio=24/23) {
+thetas = seq(0,1,length=NNN)*2*pi*waves
+return(cbind(cos(thetas),sin(ratio*thetas)))
+}
+par(pty='s',ann=F,mai=0*c(1,1,1,1), mfrow=c(2,2))
+plot(harmonica(ratio=1,waves=.95),typ='l',axes=FALSE)
+plot(harmonica(ratio=4/3,waves = 2.95),typ='l',axes=FALSE)
+plot(harmonica(ratio=8/7,waves = 6.95),typ='l',axes=FALSE)
+plot(harmonica(waves=22.95),typ='l',axes=FALSE)
 ```
 
 <img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-1-1.png" width="672" />
@@ -33,12 +39,11 @@ traveled = function(xy){
   return(traveled)}
 
 #Example:
-NNN=500
-thetas = seq(0,1,length=NNN)*12*pi
-xy0 = 1*cbind(sin(thetas),cos(thetas*5/6) )
+NNN0=500
+xy0 = harmonica(NNN=NNN0,ratio=4/3,waves=2.95)
 travel = traveled(xy0)
-xy = cbind(approx(travel,xy0[,1],seq(0,1,length=NNN),rule=2)[[2]],
-           approx(travel,xy0[,2],seq(0,1,length=NNN),rule=2)[[2]])
+xy = cbind(approx(travel,xy0[,1],seq(0,1,length=NNN0),rule=2)[[2]],
+           approx(travel,xy0[,2],seq(0,1,length=NNN0),rule=2)[[2]])
 
 par(pty='s',ann=F,mai=0*c(1,1,1,1),mfrow=c(1,2))
 plot(xy,typ='l',axes=F)
