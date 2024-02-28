@@ -25,6 +25,54 @@ plot(harmonica(waves=22.95),typ='l',axes=FALSE)
 
 <img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-1-1.png" width="672" />
 
+## in python
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+def harmonica(NNN=1000, waves=23, ratio=24/23):
+    thetas = np.linspace(0, 1, num=NNN) * 2 * np.pi * waves
+    return np.column_stack((np.cos(thetas), np.sin(ratio * thetas)))
+
+fig, axs = plt.subplots(2, 2)
+
+for ax, ratio, waves in zip(axs.flatten(), [1, 4/3, 8/7, 24/23], [0.95, 2.95, 6.95, 22.95]):
+    harmonics = harmonica(ratio=ratio, waves=waves)
+    ax.plot(harmonics[:, 0], harmonics[:, 1], color='black', linewidth=0.5)
+    ax.set_xticks([])
+    ax.set_yticks([])
+    ax.set_aspect('equal')
+    ax.axis('off')  # Turn off the axes and bounding box
+```
+
+```
+## [<matplotlib.lines.Line2D object at 0x141a6fb90>]
+## []
+## []
+## (-1.0999991692927558, 1.0999999604425121, -1.0999981210196357, 1.0999997033188356)
+## [<matplotlib.lines.Line2D object at 0x141ae8110>]
+## []
+## []
+## (-1.0999997923231684, 1.099999990110627, -1.0999357707940272, 1.0999334852952614)
+## [<matplotlib.lines.Line2D object at 0x141a8fc90>]
+## []
+## []
+## (-1.099991225665797, 1.0999995821745618, -1.099998840017093, 1.0999998168447835)
+## [<matplotlib.lines.Line2D object at 0x141a7f250>]
+## []
+## []
+## (-1.1, 1.1, -1.0999998977880034, 1.0999993526573957)
+```
+
+```python
+plt.tight_layout()
+plt.savefig("harmonica_plots.png", dpi=300)
+plt.show()
+```
+
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+
 # Traveled
 
 This function computes the distance traveled along a curve as a percentage of total distance traveled, which can be used to create a new curve where the points are evenly spaced.  Works for a curve that is either in 2D or 3D space. One can make an evenly spaced vector by using linear interpolation for lookup table is combination of distance traveled and the x (or y vector) and one "looks up" a set of numbers that are evenly spaced on the unit interval.  In the pictures below the "dots" cluster in the corner in the graph on the right as they are not evenly spaced.
@@ -53,7 +101,7 @@ plot(xy0,typ='l',axes=F)
 points(xy0,pch=20,col=rgb(1,0,0,.5))
 ```
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-3-3.png" width="672" />
 
 
 # dougsSign
@@ -81,7 +129,7 @@ lines(2*xy[,1]/i,xy[,2])
 }
 ```
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-4-1.png" width="672" />
 
 # polly
 
@@ -111,6 +159,6 @@ for (i in 1:35) {
 }
 ```
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-5-1.png" width="672" />
 
 
