@@ -47,19 +47,19 @@ for ax, ratio, waves in zip(axs.flatten(), [1, 4/3, 8/7, 24/23], [0.95, 2.95, 6.
 ```
 
 ```
-## [<matplotlib.lines.Line2D object at 0x141a6fb90>]
+## [<matplotlib.lines.Line2D object at 0x168bb0a50>]
 ## []
 ## []
 ## (-1.0999991692927558, 1.0999999604425121, -1.0999981210196357, 1.0999997033188356)
-## [<matplotlib.lines.Line2D object at 0x141ae8110>]
+## [<matplotlib.lines.Line2D object at 0x168babd50>]
 ## []
 ## []
 ## (-1.0999997923231684, 1.099999990110627, -1.0999357707940272, 1.0999334852952614)
-## [<matplotlib.lines.Line2D object at 0x141a8fc90>]
+## [<matplotlib.lines.Line2D object at 0x168afca10>]
 ## []
 ## []
 ## (-1.099991225665797, 1.0999995821745618, -1.099998840017093, 1.0999998168447835)
-## [<matplotlib.lines.Line2D object at 0x141a7f250>]
+## [<matplotlib.lines.Line2D object at 0x298e6e910>]
 ## []
 ## []
 ## (-1.1, 1.1, -1.0999998977880034, 1.0999993526573957)
@@ -140,7 +140,11 @@ polly = function(sides=4,start=0,r=1){
   thetas=seq(0,1,length=sides+1)*2*pi
   res=r*cbind(sin(start+thetas),cos(start+thetas))
   return(res)}
+```
 
+
+
+```r
 par(pty='s',ann=F,mai=0*c(1,1,1,1),mfrow=c(1,2))
 
 p1=polly()
@@ -159,6 +163,102 @@ for (i in 1:35) {
 }
 ```
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+#bigger stars
+
+```r
+par(pty='s',ann=F,mai=0*c(1,1,1,1),mfrow=c(1,2))
+
+p1 = polly(11)
+
+plot(NULL, xlim = c(-1,1),ylim = c(-1,1), axes=F)
+text(p1[,1],p1[,2],1:10)
+for (i in 1:35) {
+  lines(rbind(p1[(i %% 11) + 1,],p1[(i+4) %% 11 + 1,]))  
+}
+```
+
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+
+# Whiteside Circle
+
+The function is named in honor of Forbes Whiteside who taught art at Oberlin College.  He used to say tha the way an artist drew a perfect circle was to lightly draw an imperfect circle and then draw another correcting the mistakes of the first one and repeat and the collection of light circles would become a dark perfect circle reinforced by the mistakes or something like that.
+
+
+```r
+whiteside = function(rho = .9,
+                     sigmae = .02,
+                     theEnd = 100,
+                     width = 1,
+                     white = rgb(1, 1, 1, .15),
+                     white2 = rgb(1, 1, 1, 1),
+                     scale = 1,
+                     scaleY = 1,
+                     rTheta = 0,
+                     shiftV = c(0, 0),
+                     fill = F) {
+                                start = 0
+                                end = theEnd * 64.1
+                                e = rnorm(end)
+                                mean = 1
+                                a = mean + e * sqrt(sigmae ^ 2 / (1 - rho ^ 2))
+                                for (i in 2:length(e)) {
+                                  a[i] = mean * (1 - rho) + rho * a[i - 1] + sigmae * e[i]
+                                }
+                                sqrt(sigmae ^ 2 / (1 - rho ^ 2))
+                     if (fill == T) {
+                       thetas = 2 * pi * seq(0, 1, .01)
+                       circle = cbind(scale * sin(thetas), scale * scaleY * cos(thetas))
+                       circle = rotate(circle, rTheta)
+                       circle = shift(circle, shiftV)
+                       polygon(circle, col = white2, border = NA)
+                     }
+
+                                
+                                
+            thetas = (1 / 64.1) * seq(1:end) * 2 * pi
+            for (j in 1:theEnd) {
+                start = (j - 1) * 65 + 1
+                end = start + 65
+                circle = cbind(a[start:end] * scale * cos(thetas[start:end]), a[start:end] *
+                     scale * scaleY * sin(thetas[start:end]))
+                circle = rotate(circle, rTheta)
+                circle = shift(circle, shiftV)
+                lines(circle,
+                typ = "l",
+                col = white,
+                lwd = width)
+                }
+}
+
+rotate=function (xy,theta,about=c(0,0)) {
+  rows=nrow(xy)
+  center=t(matrix(rep(about,rows),2,rows))
+
+  rotate=rbind(c(cos(theta),sin(theta)),c(-sin(theta),cos(theta)))
+  rxy =(xy-center) %*% rotate +center
+
+  return(rxy)}
+shift=function(xy,shifted)
+{
+  rows=nrow(xy)
+  xynew=xy+t(matrix(rep(shifted,rows),2,rows))
+  return(xynew)}
+
+par(pty="s",ann=FALSE,mfrow=c(1,1),bg="grey70",mai=.1*c(1,1,1,1))
+
+ plot(NULL, xlim = c(-1.2, 1.2), ylim = c(-1.2, 1.2),axes=FALSE)
+ whiteside(
+   rho = .98,
+   sigmae = .015,
+   theEnd = 500,
+   white = rgb(1, 1, 1, .2),
+   white2 = rgb(1, 1, 1, 1),
+   width = 1,
+   fill = F
+ )
+```
+
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-8-1.png" width="672" />
 
 
