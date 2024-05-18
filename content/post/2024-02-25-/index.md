@@ -47,19 +47,19 @@ for ax, ratio, waves in zip(axs.flatten(), [1, 4/3, 8/7, 24/23], [0.95, 2.95, 6.
 ```
 
 ```
-## [<matplotlib.lines.Line2D object at 0x168bb0a50>]
+## [<matplotlib.lines.Line2D object at 0x126bf5350>]
 ## []
 ## []
 ## (-1.0999991692927558, 1.0999999604425121, -1.0999981210196357, 1.0999997033188356)
-## [<matplotlib.lines.Line2D object at 0x168babd50>]
+## [<matplotlib.lines.Line2D object at 0x126c27390>]
 ## []
 ## []
 ## (-1.0999997923231684, 1.099999990110627, -1.0999357707940272, 1.0999334852952614)
-## [<matplotlib.lines.Line2D object at 0x168afca10>]
+## [<matplotlib.lines.Line2D object at 0x126c80950>]
 ## []
 ## []
 ## (-1.099991225665797, 1.0999995821745618, -1.099998840017093, 1.0999998168447835)
-## [<matplotlib.lines.Line2D object at 0x298e6e910>]
+## [<matplotlib.lines.Line2D object at 0x126cb2750>]
 ## []
 ## []
 ## (-1.1, 1.1, -1.0999998977880034, 1.0999993526573957)
@@ -75,30 +75,35 @@ plt.show()
 
 # Traveled
 
-This function computes the distance traveled along a curve as a percentage of total distance traveled, which can be used to create a new curve where the points are evenly spaced.  Works for a curve that is either in 2D or 3D space. One can make an evenly spaced vector by using linear interpolation for lookup table is combination of distance traveled and the x (or y vector) and one "looks up" a set of numbers that are evenly spaced on the unit interval.  In the pictures below the "dots" cluster in the corner in the graph on the right as they are not evenly spaced.
+This function computes the distance traveled along a curve as a percentage of total distance traveled, which can be used to create a new curve where the points are evenly spaced.  Works for a curve that is either in 2D or 3D space. One can make an evenly spaced vector by using linear interpolation for a lookup table is combination of distance traveled and the x (or y vector) and one "looks up" a set of numbers that are evenly spaced on the unit interval.  In the pictures below the "dots" cluster in the corner in the graph on the right as they are not evenly spaced.
 
 ```r
-traveled = function(xy){
-  NN = nrow(xy)
+traveled <- function(xy) {
+  NN <- nrow(xy)
   if (ncol(xy) == 2) {
-  distanceBetween = c(0,sqrt( rowSums((xy[1:(NN-1),1:2]-xy[2:(NN),1:2])^2 ))) } else {
-    distanceBetween = c(0,sqrt( rowSums((xy[1:(NN-1),1:3]-xy[2:(NN),1:3])^2 ))) }
-  traveled = cumsum(distanceBetween)/sum(distanceBetween)
-  return(traveled)}
+    distanceBetween <- c(0, sqrt(rowSums((xy[1:(NN - 1), 1:2] - xy[2:(NN), 1:2])^2)))
+  } else {
+    distanceBetween <- c(0, sqrt(rowSums((xy[1:(NN - 1), 1:3] - xy[2:(NN), 1:3])^2)))
+  }
+  traveled <- cumsum(distanceBetween) / sum(distanceBetween)
+  return(traveled)
+}
 
-#Example:
-NNN0=500
-xy0 = harmonica(NNN=NNN0,ratio=4/3,waves=2.95)
-travel = traveled(xy0)
-xy = cbind(approx(travel,xy0[,1],seq(0,1,length=NNN0),rule=2)[[2]],
-           approx(travel,xy0[,2],seq(0,1,length=NNN0),rule=2)[[2]])
+# Example:
+NNN0 <- 500
+xy0 <- harmonica(NNN = NNN0, ratio = 4 / 3, waves = 2.95)
+travel <- traveled(xy0)
+xy <- cbind(
+  approx(travel, xy0[, 1], seq(0, 1, length = NNN0), rule = 2)[[2]],
+  approx(travel, xy0[, 2], seq(0, 1, length = NNN0), rule = 2)[[2]]
+)
 
-par(pty='s',ann=F,mai=0*c(1,1,1,1),mfrow=c(1,2))
-plot(xy,typ='l',axes=F)
-points(xy,pch=20,col=rgb(1,0,0,.5))
+par(pty = "s", ann = F, mai = 0 * c(1, 1, 1, 1), mfrow = c(1, 2))
+plot(xy, typ = "l", axes = F)
+points(xy, pch = 20, col = rgb(1, 0, 0, .5))
 
-plot(xy0,typ='l',axes=F)
-points(xy0,pch=20,col=rgb(1,0,0,.5))
+plot(xy0, typ = "l", axes = F)
+points(xy0, pch = 20, col = rgb(1, 0, 0, .5))
 ```
 
 <img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-3-3.png" width="672" />
@@ -110,22 +115,22 @@ This function conveniently transforms a sin curve to a given top and bottom and 
 
 
 ```r
-dougsSign = function(topBottom,NNN,waves=2*pi,start0=0){
-  thetas = seq(0,1,length=NNN)*waves
-  wave = (topBottom[1]-topBottom[2]) *( (sin(thetas+start0)+1)/2) + topBottom[2]
-  return(cbind(thetas,wave))
+dougsSign <- function(topBottom, NNN, waves = 2 * pi, start0 = 0) {
+  thetas <- seq(0, 1, length = NNN) * waves
+  wave <- (topBottom[1] - topBottom[2]) * ((sin(thetas + start0) + 1) / 2) + topBottom[2]
+  return(cbind(thetas, wave))
 }
 
-dY = 1/4
-par(pty='s',ann=F)
+dY <- 1 / 4
+par(pty = "s", ann = F)
 
-plot(NULL, xlim=c(0,2*pi),ylim=c(-1,1),axes=F)
+plot(NULL, xlim = c(0, 2 * pi), ylim = c(-1, 1), axes = F)
 
-start=32
-stop = 18
-for (i in seq(start,stop,-2)){
-  xy = dougsSign((start-i)*dY/2+c(-1,-1+dY),1000,waves=i*pi)
-lines(2*xy[,1]/i,xy[,2])
+start <- 32
+stop <- 18
+for (i in seq(start, stop, -2)) {
+  xy <- dougsSign((start - i) * dY / 2 + c(-1, -1 + dY), 1000, waves = i * pi)
+  lines(2 * xy[, 1] / i, xy[, 2])
 }
 ```
 
@@ -172,9 +177,17 @@ par(pty='s',ann=F,mai=0*c(1,1,1,1),mfrow=c(1,2))
 p1 = polly(11)
 
 plot(NULL, xlim = c(-1,1),ylim = c(-1,1), axes=F)
-text(p1[,1],p1[,2],1:10)
+text(p1[,1],p1[,2],1:11)
 for (i in 1:35) {
   lines(rbind(p1[(i %% 11) + 1,],p1[(i+4) %% 11 + 1,]))  
+}
+
+p1 = polly(7)
+
+plot(NULL, xlim = c(-1,1),ylim = c(-1,1), axes=F)
+text(p1[,1],p1[,2],1:7)
+for (i in 1:14) {
+  lines(rbind(p1[(i %% 7) + 1,],p1[(i+2) %% 7 + 1,]))  
 }
 ```
 
