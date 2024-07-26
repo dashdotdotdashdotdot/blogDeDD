@@ -8,6 +8,46 @@ categories:
 
 This post is to keep track of some functions of mine that I find useful in making mathematical art.
 
+
+# Application of a tri-cube weight function
+
+The tricubic weight function is:
+
+$$ y = (1-|x|^3)^3$$
+
+for x in [-1,1]
+
+So when x is close to 0 it will be 1 and when x is close to 1 or negative it is zero.   It assume has a derivative of 0 at when x is 1, -1 or 0 which makes it asethically appealing relative to say a triangle function. Our application takes as additional input a scaler, knot, and a two element vectoring called streetching that are used to center and streetching the inputed x vector before applying the tricubic weight function.  We also return 0 whenever the transformed x is outside the range [-1,1].
+
+This funcction is useful for making a local smooth adjustment in the context of an annimation.
+
+
+```{r}
+triCubeDWD = function(x,knot=0,streeching=c(1,1)){
+  y_tmp = (x-knot)
+  y = pmin( pmax( as.numeric(y_tmp<=0)*y_tmp*streeching[1] + as.numeric(y_tmp>0)*y_tmp*streeching[2] ,-1), 1)
+  return((1-abs(y)^3)^3)
+}
+
+x = seq(-4,4,length=1000)
+
+plot(x,triCubeDWD(x),typ="l",col='darkblue',lwd=2)
+lines(x,triCubeDWD(x,streeching = c(.3,.3)),col='darkred',lwd=2)
+lines(x,triCubeDWD(x,streeching = c(3,3)),col='gold',lwd=2)
+
+plot(x,triCubeDWD(x),typ="l",col='darkblue',lwd=2)
+lines(x,triCubeDWD(x,knot= - 0.5),col='darkred',lwd=2)
+lines(x,triCubeDWD(x,knot = .5),col='gold',lwd=2)
+
+plot(x,triCubeDWD(x),typ="l",col='darkblue',lwd=2)
+lines(x,triCubeDWD(x,streeching = c(0.5, 2)),col='darkred',lwd=2)
+lines(x,triCubeDWD(x,streeching = c(2,0.5)),col='gold',lwd=2)
+
+
+```
+
+
+
 # Harmonica
 I call this one _harmonica_ as it is based on a harmonagraph.
 ```{r}
