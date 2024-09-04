@@ -9,6 +9,35 @@ categories:
 This post is to keep track of some functions of mine that I find useful in making mathematical art.
 
 
+# Space Them Beads
+
+This functions allows for an artibrary spacing of beads on an interval. It can be used to make a staircase like function that is in fact continuous (I think).
+
+
+``` r
+spaceThemBeads = function(shrinks){
+  deltas = exp(shrinks)
+  spaced = cumsum(deltas)/sum(deltas)
+  return(spaced)
+}
+
+#Make a step like function that is mathematically continuous
+betas = exp(seq(log(10),log(.1),length=10))
+
+plot(NULL,ylim=c(0,1),xlim = c(0,100))
+
+for (i in 1:length(betas)){
+
+thetas = seq(0,1,length=100)*16*pi
+xs = betas[i]*sin(thetas)
+lines(1:length(xs),spaceThemBeads(xs),lwd=1)
+
+}
+```
+
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-1-1.png" width="672" />
+
+
 # Application of a tri-cube weight function
 
 The tricubic weight function is:
@@ -37,7 +66,7 @@ lines(x,triCubeDWD(x,streeching = c(.3,.3)),col='darkred',lwd=2)
 lines(x,triCubeDWD(x,streeching = c(3,3)),col='gold',lwd=2)
 ```
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-1-1.png" width="672" />
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-1.png" width="672" />
 
 ``` r
 plot(x,triCubeDWD(x),typ="l",col='darkblue',lwd=2)
@@ -45,7 +74,7 @@ lines(x,triCubeDWD(x,knot= - 0.5),col='darkred',lwd=2)
 lines(x,triCubeDWD(x,knot = .5),col='gold',lwd=2)
 ```
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-1-2.png" width="672" />
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-2.png" width="672" />
 
 ``` r
 plot(x,triCubeDWD(x),typ="l",col='darkblue',lwd=2)
@@ -53,7 +82,7 @@ lines(x,triCubeDWD(x,streeching = c(0.5, 2)),col='darkred',lwd=2)
 lines(x,triCubeDWD(x,streeching = c(2,0.5)),col='gold',lwd=2)
 ```
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-1-3.png" width="672" />
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-3.png" width="672" />
 
 
 
@@ -72,7 +101,7 @@ plot(harmonica(ratio=8/7,waves = 6.95),typ='l',axes=FALSE)
 plot(harmonica(waves=22.95),typ='l',axes=FALSE)
 ```
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-3-1.png" width="672" />
 
 ## in python
 
@@ -96,19 +125,19 @@ for ax, ratio, waves in zip(axs.flatten(), [1, 4/3, 8/7, 24/23], [0.95, 2.95, 6.
 ```
 
 ```
-## [<matplotlib.lines.Line2D object at 0x129db2e10>]
+## [<matplotlib.lines.Line2D object at 0x13fb3d510>]
 ## []
 ## []
 ## (-1.0999991692927558, 1.0999999604425121, -1.0999981210196357, 1.0999997033188356)
-## [<matplotlib.lines.Line2D object at 0x129e864d0>]
+## [<matplotlib.lines.Line2D object at 0x13fa74f10>]
 ## []
 ## []
 ## (-1.0999997923231684, 1.099999990110627, -1.0999357707940272, 1.0999334852952614)
-## [<matplotlib.lines.Line2D object at 0x129e87290>]
+## [<matplotlib.lines.Line2D object at 0x13fb5e990>]
 ## []
 ## []
 ## (-1.099991225665797, 1.0999995821745618, -1.099998840017093, 1.0999998168447835)
-## [<matplotlib.lines.Line2D object at 0x10ddecb90>]
+## [<matplotlib.lines.Line2D object at 0x13fb5eb90>]
 ## []
 ## []
 ## (-1.1, 1.1, -1.0999998977880034, 1.0999993526573957)
@@ -120,7 +149,7 @@ plt.savefig("harmonica_plots.png", dpi=300)
 plt.show()
 ```
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-4-1.png" width="672" />
 
 # Traveled
 
@@ -155,7 +184,7 @@ plot(xy0, typ = "l", axes = F)
 points(xy0, pch = 20, col = rgb(1, 0, 0, .5))
 ```
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-4-3.png" width="672" />
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-5-3.png" width="672" />
 
 
 # dougsSign
@@ -183,7 +212,7 @@ for (i in seq(start, stop, -2)) {
 }
 ```
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-1.png" width="672" />
 
 # polly
 
@@ -217,7 +246,7 @@ for (i in 1:35) {
 }
 ```
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-8-1.png" width="672" />
 #bigger stars
 
 ``` r
@@ -240,7 +269,7 @@ for (i in 1:14) {
 }
 ```
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-8-1.png" width="672" />
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-9-1.png" width="672" />
 
 # Whiteside Circle
 
@@ -321,6 +350,6 @@ par(pty="s",ann=FALSE,mfrow=c(1,1),bg="grey70",mai=.1*c(1,1,1,1))
  )
 ```
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-10-1.png" width="672" />
 
 
