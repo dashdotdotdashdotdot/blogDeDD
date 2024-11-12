@@ -95,21 +95,12 @@ $$ XYZ_0 + t(dX,dY,1) $$
 
 The ray through the point on the picture is defined as
 
-$$\{ x_iZ,y_iZ,Z \} $$ We have Z=t + Z_0 from the third coordinate which
+$$\{ x_iZ,y_iZ,Z \} $$ We have $Z=t + Z_0$ (or $t = Z - Z_0$) from the third coordinate which
 then implies
 
-$$ x_iZ = X_0 + ZdX $$
+$$ x_iZ = X_0 + (Z-Z_0)dX $$
+which is a linear equation with one unknown (Z):
 
-and $$ y_iZ = Y_0 + ZdY $$ which is two equations and one unknown (Z):
+$$ (x_i - dX)Z = X_0 - Z_0dX $$
 
-$$ Z = \frac{X_0}{x_i-dX} $$
-
-and
-
-$$ Z = \frac{Y_0}{y_i-dY} $$
-
-which implies
-
-$$ \frac{X_0}{Y_0} =  \frac{y_i-dY}{x_i-dX}$$
-
-\$\$
+$$ Z = \frac{ X_0 - Z_0dX}{x_i - dX} $$
