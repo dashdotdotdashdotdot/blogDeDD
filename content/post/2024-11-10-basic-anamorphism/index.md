@@ -102,3 +102,12 @@ which is a linear equation with one unknown (Z):
 $$ (x_i - dX)Z = X_0 - Z_0dX $$
 
 $$ Z = \frac{ X_0 - Z_0dX}{x_i - dX} $$
+
+We also have:
+$$ y_iZ = Y_0 + (Z-Z_0)dX $$
+which is a linear equation with one unknown (Z):
+
+$$ (y_i - dX)Z = Y_0 - Z_0dY $$
+
+$$ Z = \frac{ Y_0 - Z_0dY}{y_i - dY} $$
+
