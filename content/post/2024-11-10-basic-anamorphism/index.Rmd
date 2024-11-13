@@ -89,27 +89,30 @@ lines(drawingNew[[1]])
 More generally we can solve for the interesection on a ray from the
 origin through the point on the drawing and an arbitrary plane.
 
-Define an arbitary plane as:
+Any point on a specific plane can be expressed as a linear combination of 2 vectors plus through a starting point:
 
-$$ XYZ_0 + t(dX,dY,1) $$
+$$ XYZ_0 + AB[t_1,t_2]^T $$
+where $AB$ is a 3x2 matrix of vectors and $XYZ_0$ is a point in $R^3$ expressed as 3x1 vector, and t_1 and t_2 are the "weights" for each vector.
 
-The ray through the point on the picture is defined as
 
-$$\{ x_iZ,y_iZ,Z \} $$ We have $Z=t + Z_0$ (or $t = Z - Z_0$) from the third coordinate which
-then implies
+We can define a ray through a point on the picture plane as:
 
-$$ x_iZ = X_0 + (Z-Z_0)dX $$
-which is a linear equation with one unknown (Z):
+$$[x_i,y_i,1]^TZ$$
+where [x_i,y_i,1]^T is a 3x1 vector.  We wish to solve for t_1,t_2 and Z such that the two points coincide:
 
-$$ (x_i - dX)Z = X_0 - Z_0dX $$
+$$[x_i,y_i,1]^TZ =  XYZ_0 + AB[t_1,t_2]^T $$
+or 
 
-$$ Z = \frac{ X_0 - Z_0dX}{x_i - dX} $$
+$$[x_i,y_i,1]^TZ -  AB[t_1,t_2]^T =  XYZ_0  $$
+or
 
-We also have:
-$$ y_iZ = Y_0 + (Z-Z_0)dX $$
-which is a linear equation with one unknown (Z):
+$$ABxy[-t_1,-t_2,Z]^T =  XYZ_0  $$
+where $ABxy$ is the matrix formed by combining $AB$ with $[x_i,y_i,1]^T$
 
-$$ (y_i - dX)Z = Y_0 - Z_0dY $$
+which can be solved by inverting this matrix:
 
-$$ Z = \frac{ Y_0 - Z_0dY}{y_i - dY} $$
+
+$$[-t_1,-t_2,Z]^T = \bigg(ABxy\bigg)^{-1} XYZ_0  $$
+which allows one to map any point on a picture plane to a point on another plane.
+
 
