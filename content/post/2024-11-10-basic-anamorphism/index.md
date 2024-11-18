@@ -24,7 +24,7 @@ $$ XYZ_i = \{ X_i, \delta(Z_i-1),Z_i \}$$
 which has the projection:
 
 $$ pXYZ_i = \bigg( \frac{X_i}{Z_i}, \frac{\delta(Z_i-1)}{Z_i} ,1 \bigg)$$
-Given `\(\{x_i,y_i\}\)` we wish to solve for XYZ that has that projection,
+Given `\(\{x_i,y_i\}\)` we wish to solve for `\(XYZ\)` that has that projection,
 which implies
 
 $$ y_i = \frac{\delta(Z_i-1)}{Z_i} $$ and
@@ -84,7 +84,9 @@ lines(drawingNew[[1]])
 
 <img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-1-1.png" width="672" />
 
-More generally we can solve for the interesection on a ray from the
+# A More General Solution
+
+More generally we can solve for the intersection on a ray from the
 origin through the point on the drawing and an arbitrary plane.
 
 Any point on a specific plane can be expressed as a linear combination of 2 vectors plus through a starting point:
@@ -96,7 +98,7 @@ where `\(AB\)` is a 3x2 matrix of vectors and `\(XYZ_0\)` is a point in `\(R^3\)
 We can define a ray through a point on the picture plane as:
 
 `$$[x_i,y_i,1]^TZ$$`
-where [x_i,y_i,1]^T is a 3x1 vector.  We wish to solve for t_1,t_2 and Z such that the two points coincide:
+where `\([x_i,y_i,1]^T\)` is a 3x1 vector.  We wish to solve for t_1,t_2 and Z such that the two points coincide:
 
 $$[x_i,y_i,1]^TZ =  XYZ_0 + AB[t_1,t_2]^T $$
 or 
@@ -114,3 +116,30 @@ $$[-t_1,-t_2,Z]^T = \bigg(ABxy\bigg)^{-1} XYZ_0  $$
 which allows one to map any point on a picture plane to a point on another plane.
 
 
+# What About Shadows
+
+
+A shadow is in a sense an anamorphism when cast on a flat surface.  Shadows cast be the sun are different from shadows cast by a light as the sun rays are parrellel in the former.
+
+
+
+We can define a ray cast be the sun through a arbitary point as:
+
+`$$[dx,dy,dz]^Tt_3 + xyz0$$`. where [dx dy dz]^T is a column vector indicating the direction of the sunlight and xyz0 is one point through which it passes represented as a column vector. 
+
+
+We wish to solve for t_1,t_2 and t_3 using this system of three equations and three unknowns:
+
+$$[dx,dy,dz]^Tt_3 + xyz0 =  XYZ_0 + AB[t_1,t_2]^T $$
+
+or 
+
+
+$$ AB[t_1,t_2]^T - [dx,dy,dz]^Tt_3 =  =  xyz0 - XYZ_0  $$
+or 
+
+$$ ABC[t_1,t_2,t_3]^T =   xyz0 - XYZ_0  $$
+where ABC is the vectors A B and [dx,dy,dz]^T
+
+
+$$ [t_1,t_2,t_3]^T =   ABC^{-1} (xyz0 - XYZ_0)  $$
