@@ -118,7 +118,7 @@ $$[-t_1,-t_2,Z]^T = \bigg(ABxy\bigg)^{-1} XYZ_0  $$
 which allows one to map any point on a picture plane to a point on another plane.
 
 
-# What About Shadows
+# What About Shadows?
 
 
 A shadow is in a sense an anamorphism when cast on a flat surface.  Shadows cast be the sun are different from shadows cast by a light as the sun rays are parrellel in the former.
@@ -137,11 +137,11 @@ $$[dx,dy,dz]^Tt_3 + xyz0 =  XYZ_0 + AB[t_1,t_2]^T $$
 or 
 
 
-$$ AB[t_1,t_2]^T - [dx,dy,dz]^Tt_3 =  =  xyz0 - XYZ_0  $$
+$$ AB[t_1,t_2]^T - [dx,dy,dz]^Tt_3 =   xyz0 - XYZ_0  $$
 or 
 
 $$ ABC[t_1,t_2,t_3]^T =   xyz0 - XYZ_0  $$
-where ABC is the vectors A B and [dx,dy,dz]^T
+where ABC is the vectors A B and [dx,dy,dz]^T or:
 
 
 $$ [t_1,t_2,t_3]^T =   ABC^{-1} (xyz0 - XYZ_0)  $$
